@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest ./src --coverage",
+    "test:watch": "jest ./src --watch",
+    "test:watch:all": "jest ./src --watchAll",
     "start:dev": "nodemon src/app.ts"
   },
   "keywords": [],
