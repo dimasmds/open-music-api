@@ -2,6 +2,7 @@
 
 interface AuthenticationRepository {
   persistRefreshToken(refreshToken: string): Promise<void>
+  isRefreshTokenRegistered(refreshToken: string): Promise<boolean>
 }
 
 export default AuthenticationRepository;
