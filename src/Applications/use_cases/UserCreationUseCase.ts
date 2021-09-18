@@ -4,7 +4,7 @@ import PasswordHash from '../security/PasswordHash';
 import UserRegister from '../../Domains/users/entities/UserRegister';
 
 class UserCreationUseCase {
-  private userRepository: UserRepository;
+  private readonly userRepository: UserRepository;
 
   private readonly passwordHash: PasswordHash;
 
@@ -14,15 +14,8 @@ class UserCreationUseCase {
   }
 
   async execute(useCasePayload: any) {
-    const userRegister = new UserRegister(this.passwordHash);
+    const userRegister = new UserRegister(this.passwordHash, this.userRepository);
     const createdUserRegister = await userRegister.create(useCasePayload);
-
-    const isUsernameAvailable = await this.userRepository
-      .isRegisterUsernameAvailable(createdUserRegister.username);
-
-    if (!isUsernameAvailable) {
-      throw new Error('USER_CREATION_USE_CASE.USERNAME_ALREADY_TAKEN');
-    }
 
     return this.userRepository.persist(createdUserRegister);
   }

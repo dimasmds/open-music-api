@@ -1,7 +1,10 @@
 import PasswordHash from '../../../Applications/security/PasswordHash';
+import UserRepository from '../UserRepository';
 
 class UserRegister {
   private passwordHash: PasswordHash;
+
+  private userRepository: UserRepository;
 
   public username: string;
 
@@ -9,14 +12,22 @@ class UserRegister {
 
   public fullname: string;
 
-  constructor(passwordHash: PasswordHash) {
+  constructor(passwordHash: PasswordHash, userRepository: UserRepository) {
     this.passwordHash = passwordHash;
+    this.userRepository = userRepository;
   }
 
   async create(payload: any) {
     UserRegister.verifyCreationPayload(payload);
 
     const { username, password, fullname } = payload;
+
+    const isRegisterUsernameAvailable = await this.userRepository
+      .isRegisterUsernameAvailable(username);
+
+    if (!isRegisterUsernameAvailable) {
+      throw new Error('USER_REGISTER.USERNAME_ALREADY_TAKEN');
+    }
 
     this.username = username;
     this.password = await this.passwordHash.hash(password);

@@ -1,11 +1,15 @@
 import UserRegister from '../UserRegister';
 import PasswordHash from '../../../../Applications/security/PasswordHash';
+import UserRepository from '../../UserRepository';
 
 describe('UserRegister', () => {
   // Arrange
   const mockPasswordHash = <PasswordHash>{};
+  const mockUserRepository = <UserRepository>{};
+
   mockPasswordHash.hash = jest.fn(() => Promise.resolve('hashed!'));
-  const userRegister = new UserRegister(mockPasswordHash);
+
+  const userRegister = new UserRegister(mockPasswordHash, mockUserRepository);
 
   describe('create', () => {
     it('should throw error when payload not contain username', async () => {
@@ -66,7 +70,22 @@ describe('UserRegister', () => {
       })).rejects.toThrowError('USER_REGISTER.FULLNAME_NOT_STRING');
     });
 
+    it('should throw error when username already taken', async () => {
+      // Arrange
+      mockUserRepository.isRegisterUsernameAvailable = jest.fn(() => Promise.resolve(false));
+
+      // Action & Assert
+      await expect(userRegister.create({
+        username: 'dicoding',
+        password: 'secret',
+        fullname: 'Dicoding Indonesia',
+      })).rejects.toThrowError('USER_REGISTER.USERNAME_ALREADY_TAKEN');
+    });
+
     it('should contain username property', async () => {
+      // Arrange
+      mockUserRepository.isRegisterUsernameAvailable = jest.fn(() => Promise.resolve(true));
+
       // Action
       const createdUserRegister = await userRegister.create({
         username: 'dicoding',
@@ -79,6 +98,9 @@ describe('UserRegister', () => {
     });
 
     it('should contain password property with hashed password', async () => {
+      // Arrange
+      mockUserRepository.isRegisterUsernameAvailable = jest.fn(() => Promise.resolve(true));
+
       // Action
       const createdUserRegister = await userRegister.create({
         username: 'dicoding',
@@ -92,6 +114,9 @@ describe('UserRegister', () => {
     });
 
     it('should contain fullname property', async () => {
+      // Arrange
+      mockUserRepository.isRegisterUsernameAvailable = jest.fn(() => Promise.resolve(true));
+
       // Action
       const createdUserRegister = await userRegister.create({
         username: 'dicoding',
