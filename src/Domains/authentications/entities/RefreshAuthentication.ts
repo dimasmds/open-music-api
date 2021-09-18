@@ -1,5 +1,5 @@
-import AuthenticationRepository from '../AuthenticationRepository';
-import AuthTokenCreator from '../../../Applications/security/AuthTokenCreator';
+import AuthenticationRepository from '../repository/AuthenticationRepository';
+import AuthTokenCreator from '../security/AuthTokenCreator';
 
 class RefreshAuthentication {
   private authenticationRepository: AuthenticationRepository;

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import UserRegister from './entities/UserRegister';
+import UserRegister from '../entities/UserRegister';
 
 interface UserRepository {
   persist(registerUser: UserRegister): Promise<string>

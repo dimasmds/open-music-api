@@ -1,5 +1,5 @@
 import Authentication from '../Authentication';
-import AuthTokenCreator from '../../../../Applications/security/AuthTokenCreator';
+import AuthTokenCreator from '../../security/AuthTokenCreator';
 
 describe('Authentication', () => {
   const mockAuthTokenCreator = <AuthTokenCreator>{};

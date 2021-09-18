@@ -1,5 +1,5 @@
-import PasswordHash from '../../../Applications/security/PasswordHash';
-import UserRepository from '../UserRepository';
+import PasswordHash from '../security/PasswordHash';
+import UserRepository from '../repository/UserRepository';
 
 class UserLogin {
   private passwordHash: PasswordHash;

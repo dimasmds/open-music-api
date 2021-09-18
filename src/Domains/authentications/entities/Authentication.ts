@@ -1,4 +1,4 @@
-import AuthTokenCreator from '../../../Applications/security/AuthTokenCreator';
+import AuthTokenCreator from '../security/AuthTokenCreator';
 
 class Authentication {
   private authTokenCreator: AuthTokenCreator;

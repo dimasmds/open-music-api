@@ -1,6 +1,6 @@
 import UserCreationUseCase from '../UserCreationUseCase';
-import UserRepository from '../../../Domains/users/UserRepository';
-import PasswordHash from '../../security/PasswordHash';
+import UserRepository from '../../../Domains/users/repository/UserRepository';
+import PasswordHash from '../../../Domains/users/security/PasswordHash';
 
 describe('UserCreationUseCase', () => {
   const mockUserRepository = <UserRepository>{};

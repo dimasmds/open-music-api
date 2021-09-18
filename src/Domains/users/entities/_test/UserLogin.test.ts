@@ -1,6 +1,6 @@
 import UserLogin from '../UserLogin';
-import UserRepository from '../../UserRepository';
-import PasswordHash from '../../../../Applications/security/PasswordHash';
+import UserRepository from '../../repository/UserRepository';
+import PasswordHash from '../../security/PasswordHash';
 
 describe('UserLogin', () => {
   const mockUserRepository = <UserRepository>{};

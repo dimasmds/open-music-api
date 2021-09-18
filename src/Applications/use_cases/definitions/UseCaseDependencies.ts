@@ -1,7 +1,7 @@
-import UserRepository from '../../../Domains/users/UserRepository';
-import PasswordHash from '../../security/PasswordHash';
-import AuthenticationRepository from '../../../Domains/authentications/AuthenticationRepository';
-import AuthTokenCreator from '../../security/AuthTokenCreator';
+import UserRepository from '../../../Domains/users/repository/UserRepository';
+import PasswordHash from '../../../Domains/users/security/PasswordHash';
+import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
+import AuthTokenCreator from '../../../Domains/authentications/security/AuthTokenCreator';
 
 interface UseCaseDependencies {
   userRepository?: UserRepository

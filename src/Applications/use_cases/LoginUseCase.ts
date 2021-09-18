@@ -1,8 +1,8 @@
 import UseCaseDependencies from './definitions/UseCaseDependencies';
-import UserRepository from '../../Domains/users/UserRepository';
-import PasswordHash from '../security/PasswordHash';
-import AuthTokenCreator from '../security/AuthTokenCreator';
-import AuthenticationRepository from '../../Domains/authentications/AuthenticationRepository';
+import UserRepository from '../../Domains/users/repository/UserRepository';
+import PasswordHash from '../../Domains/users/security/PasswordHash';
+import AuthTokenCreator from '../../Domains/authentications/security/AuthTokenCreator';
+import AuthenticationRepository from '../../Domains/authentications/repository/AuthenticationRepository';
 import UserLogin from '../../Domains/users/entities/UserLogin';
 import Authentication from '../../Domains/authentications/entities/Authentication';
 
