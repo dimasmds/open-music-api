@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import RegisterUser from './entities/RegisterUser';
+import UserRegister from './entities/UserRegister';
 
 interface UserRepository {
-  persist(registerUser: RegisterUser): Promise<string>
+  persist(registerUser: UserRegister): Promise<string>
   isRegisterUsernameAvailable(username: string) : Promise<boolean>
 }
 

@@ -1,6 +1,6 @@
 import PasswordHash from '../../../Applications/security/PasswordHash';
 
-class RegisterUser {
+class UserRegister {
   private passwordHash: PasswordHash;
 
   public username: string;
@@ -14,7 +14,7 @@ class RegisterUser {
   }
 
   async create(payload: any) {
-    RegisterUser.verifyCreationPayload(payload);
+    UserRegister.verifyCreationPayload(payload);
 
     const { username, password, fullname } = payload;
 
@@ -29,37 +29,37 @@ class RegisterUser {
     const { username, password, fullname } = payload;
 
     if (!username) {
-      throw new Error('REGISTER_USER.NOT_CONTAIN_USERNAME');
+      throw new Error('USER_REGISTER.NOT_CONTAIN_USERNAME');
     }
 
     if (typeof username !== 'string') {
-      throw new Error('REGISTER_USER.USERNAME_NOT_STRING');
+      throw new Error('USER_REGISTER.USERNAME_NOT_STRING');
     }
 
     if (username.length > 25) {
-      throw new Error('REGISTER_USER.USERNAME_MORE_THAN_25_CHAR');
+      throw new Error('USER_REGISTER.USERNAME_MORE_THAN_25_CHAR');
     }
 
     if (!username.match(/^[\w]+$/)) {
-      throw new Error('REGISTER_USER.USERNAME_CONTAIN_RESTRICT_CHARACTER');
+      throw new Error('USER_REGISTER.USERNAME_CONTAIN_RESTRICT_CHARACTER');
     }
 
     if (!password) {
-      throw new Error('REGISTER_USER.NOT_CONTAIN_PASSWORD');
+      throw new Error('USER_REGISTER.NOT_CONTAIN_PASSWORD');
     }
 
     if (typeof password !== 'string') {
-      throw new Error('REGISTER_USER.PASSWORD_NOT_STRING');
+      throw new Error('USER_REGISTER.PASSWORD_NOT_STRING');
     }
 
     if (!fullname) {
-      throw new Error('REGISTER_USER.NOT_CONTAIN_FULLNAME');
+      throw new Error('USER_REGISTER.NOT_CONTAIN_FULLNAME');
     }
 
     if (typeof fullname !== 'string') {
-      throw new Error('REGISTER_USER.FULLNAME_NOT_STRING');
+      throw new Error('USER_REGISTER.FULLNAME_NOT_STRING');
     }
   }
 }
 
-export default RegisterUser;
+export default UserRegister;

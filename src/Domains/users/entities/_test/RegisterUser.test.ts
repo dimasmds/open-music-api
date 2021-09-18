@@ -1,86 +1,86 @@
-import RegisterUser from '../RegisterUser';
+import UserRegister from '../UserRegister';
 import PasswordHash from '../../../../Applications/security/PasswordHash';
 
-describe('RegisterUser', () => {
+describe('UserRegister', () => {
   // Arrange
   const mockPasswordHash = <PasswordHash>{};
   mockPasswordHash.hash = jest.fn(() => Promise.resolve('hashed!'));
-  const registerUser = new RegisterUser(mockPasswordHash);
+  const userRegister = new UserRegister(mockPasswordHash);
 
   describe('create', () => {
     it('should throw error when payload not contain username', async () => {
       // Action & Assert
-      await expect(registerUser.create({})).rejects.toThrowError('REGISTER_USER.NOT_CONTAIN_USERNAME');
+      await expect(userRegister.create({})).rejects.toThrowError('USER_REGISTER.NOT_CONTAIN_USERNAME');
     });
 
     it('should throw error when username not string', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 123,
-      })).rejects.toThrowError('REGISTER_USER.USERNAME_NOT_STRING');
+      })).rejects.toThrowError('USER_REGISTER.USERNAME_NOT_STRING');
     });
 
     it('should throw error when username more than 25 character', async () => {
       // Action & Assert
-      await expect((registerUser.create({
+      await expect((userRegister.create({
         username: 'dicodingdicodingdicodingdicoding',
-      }))).rejects.toThrowError('REGISTER_USER.USERNAME_MORE_THAN_25_CHAR');
+      }))).rejects.toThrowError('USER_REGISTER.USERNAME_MORE_THAN_25_CHAR');
     });
 
     it('should throw error when username contain restricted character', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 'dico ding',
-      })).rejects.toThrowError('REGISTER_USER.USERNAME_CONTAIN_RESTRICT_CHARACTER');
+      })).rejects.toThrowError('USER_REGISTER.USERNAME_CONTAIN_RESTRICT_CHARACTER');
     });
 
     it('should throw error when payload not contain password', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 'dicoding',
-      })).rejects.toThrowError('REGISTER_USER.NOT_CONTAIN_PASSWORD');
+      })).rejects.toThrowError('USER_REGISTER.NOT_CONTAIN_PASSWORD');
     });
 
     it('should throw error when password not string', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 'dicoding',
         password: 123,
-      })).rejects.toThrowError('REGISTER_USER.PASSWORD_NOT_STRING');
+      })).rejects.toThrowError('USER_REGISTER.PASSWORD_NOT_STRING');
     });
 
     it('should throw error when payload not contain fullname', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 'dicoding',
         password: 'secret',
-      })).rejects.toThrowError('REGISTER_USER.NOT_CONTAIN_FULLNAME');
+      })).rejects.toThrowError('USER_REGISTER.NOT_CONTAIN_FULLNAME');
     });
 
     it('should throw error when fullname not string', async () => {
       // Action & Assert
-      await expect(registerUser.create({
+      await expect(userRegister.create({
         username: 'dicoding',
         password: 'secret',
         fullname: 123,
-      })).rejects.toThrowError('REGISTER_USER.FULLNAME_NOT_STRING');
+      })).rejects.toThrowError('USER_REGISTER.FULLNAME_NOT_STRING');
     });
 
     it('should contain username property', async () => {
       // Action
-      const createdRegisterUser = await registerUser.create({
+      const createdUserRegister = await userRegister.create({
         username: 'dicoding',
         password: 'secret',
         fullname: 'Dimas Maulana',
       });
 
       // Assert
-      expect(createdRegisterUser.username).toEqual('dicoding');
+      expect(createdUserRegister.username).toEqual('dicoding');
     });
 
     it('should contain password property with hashed password', async () => {
       // Action
-      const createdRegisterUser = await registerUser.create({
+      const createdUserRegister = await userRegister.create({
         username: 'dicoding',
         password: 'secret',
         fullname: 'Dimas Maulana',
@@ -88,19 +88,19 @@ describe('RegisterUser', () => {
 
       // Assert
       expect(mockPasswordHash.hash).toBeCalledWith('secret');
-      expect(createdRegisterUser.password).toEqual('hashed!');
+      expect(createdUserRegister.password).toEqual('hashed!');
     });
 
     it('should contain fullname property', async () => {
       // Action
-      const createdRegisterUser = await registerUser.create({
+      const createdUserRegister = await userRegister.create({
         username: 'dicoding',
         password: 'secret',
         fullname: 'Dimas Maulana',
       });
 
       // Assert
-      expect(createdRegisterUser.fullname).toEqual('Dimas Maulana');
+      expect(createdUserRegister.fullname).toEqual('Dimas Maulana');
     });
   });
 });

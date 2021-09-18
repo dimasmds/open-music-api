@@ -1,7 +1,7 @@
 import UseCaseDependencies from './definitions/UseCaseDependencies';
 import UserRepository from '../../Domains/users/UserRepository';
 import PasswordHash from '../security/PasswordHash';
-import RegisterUser from '../../Domains/users/entities/RegisterUser';
+import UserRegister from '../../Domains/users/entities/UserRegister';
 
 class UserCreationUseCase {
   private userRepository: UserRepository;
@@ -14,17 +14,17 @@ class UserCreationUseCase {
   }
 
   async execute(useCasePayload: any) {
-    const registerUser = new RegisterUser(this.passwordHash);
-    const createdRegisterUser = await registerUser.create(useCasePayload);
+    const userRegister = new UserRegister(this.passwordHash);
+    const createdUserRegister = await userRegister.create(useCasePayload);
 
     const isUsernameAvailable = await this.userRepository
-      .isRegisterUsernameAvailable(createdRegisterUser.username);
+      .isRegisterUsernameAvailable(createdUserRegister.username);
 
     if (!isUsernameAvailable) {
       throw new Error('USER_CREATION_USE_CASE.USERNAME_ALREADY_TAKEN');
     }
 
-    return this.userRepository.persist(createdRegisterUser);
+    return this.userRepository.persist(createdUserRegister);
   }
 }
 
