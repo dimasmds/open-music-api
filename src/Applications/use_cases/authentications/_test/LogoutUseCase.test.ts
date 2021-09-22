@@ -1,5 +1,5 @@
 import LogoutUseCase from '../LogoutUseCase';
-import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
+import AuthenticationRepository from '../../../../Domains/authentications/repository/AuthenticationRepository';
 
 describe('LogoutUseCase', () => {
   const mockAuthenticationRepository = <AuthenticationRepository>{};

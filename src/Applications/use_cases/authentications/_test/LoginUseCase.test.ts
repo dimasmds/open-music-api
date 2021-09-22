@@ -1,7 +1,7 @@
-import UserRepository from '../../../Domains/users/repository/UserRepository';
-import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
-import AuthTokenCreator from '../../../Domains/authentications/security/AuthTokenCreator';
-import PasswordHash from '../../../Domains/users/security/PasswordHash';
+import UserRepository from '../../../../Domains/users/repository/UserRepository';
+import AuthenticationRepository from '../../../../Domains/authentications/repository/AuthenticationRepository';
+import AuthTokenCreator from '../../../../Domains/authentications/security/AuthTokenCreator';
+import PasswordHash from '../../../../Domains/users/security/PasswordHash';
 import LoginUseCase from '../LoginUseCase';
 
 describe('LoginUseCase', () => {

@@ -1,6 +1,6 @@
 import RefreshAuthenticationUseCase from '../RefreshAuthenticationUseCase';
-import AuthTokenCreator from '../../../Domains/authentications/security/AuthTokenCreator';
-import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
+import AuthTokenCreator from '../../../../Domains/authentications/security/AuthTokenCreator';
+import AuthenticationRepository from '../../../../Domains/authentications/repository/AuthenticationRepository';
 
 describe('RefreshAuthenticationUseCase', () => {
   const mockAuthTokenCreator = <AuthTokenCreator>{};

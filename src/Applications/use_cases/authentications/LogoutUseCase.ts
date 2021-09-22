@@ -1,5 +1,5 @@
-import UseCaseDependencies from './definitions/UseCaseDependencies';
-import AuthenticationRepository from '../../Domains/authentications/repository/AuthenticationRepository';
+import UseCaseDependencies from '../definitions/UseCaseDependencies';
+import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
 
 class LogoutUseCase {
   private authenticationRepository: AuthenticationRepository;

@@ -1,7 +1,7 @@
-import UseCaseDependencies from './definitions/UseCaseDependencies';
-import AuthTokenCreator from '../../Domains/authentications/security/AuthTokenCreator';
-import AuthenticationRepository from '../../Domains/authentications/repository/AuthenticationRepository';
-import RefreshAuthentication from '../../Domains/authentications/entities/RefreshAuthentication';
+import UseCaseDependencies from '../definitions/UseCaseDependencies';
+import AuthTokenCreator from '../../../Domains/authentications/security/AuthTokenCreator';
+import AuthenticationRepository from '../../../Domains/authentications/repository/AuthenticationRepository';
+import RefreshAuthentication from '../../../Domains/authentications/entities/RefreshAuthentication';
 
 class RefreshAuthenticationUseCase {
   private readonly authTokenCreator: AuthTokenCreator;

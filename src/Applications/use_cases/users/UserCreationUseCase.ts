@@ -1,7 +1,7 @@
-import UseCaseDependencies from './definitions/UseCaseDependencies';
-import UserRepository from '../../Domains/users/repository/UserRepository';
-import PasswordHash from '../../Domains/users/security/PasswordHash';
-import UserRegister from '../../Domains/users/entities/UserRegister';
+import UseCaseDependencies from '../definitions/UseCaseDependencies';
+import UserRepository from '../../../Domains/users/repository/UserRepository';
+import PasswordHash from '../../../Domains/users/security/PasswordHash';
+import UserRegister from '../../../Domains/users/entities/UserRegister';
 
 class UserCreationUseCase {
   private readonly userRepository: UserRepository;
