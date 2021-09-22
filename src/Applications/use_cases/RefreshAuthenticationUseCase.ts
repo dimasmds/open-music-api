@@ -4,9 +4,9 @@ import AuthenticationRepository from '../../Domains/authentications/repository/A
 import RefreshAuthentication from '../../Domains/authentications/entities/RefreshAuthentication';
 
 class RefreshAuthenticationUseCase {
-  private authTokenCreator: AuthTokenCreator;
+  private readonly authTokenCreator: AuthTokenCreator;
 
-  private authenticationRepository: AuthenticationRepository;
+  private readonly authenticationRepository: AuthenticationRepository;
 
   constructor({ authTokenCreator, authenticationRepository }: UseCaseDependencies) {
     this.authTokenCreator = authTokenCreator;
