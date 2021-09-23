@@ -7,6 +7,7 @@
     "test": "jest ./src --coverage",
     "test:watch": "jest ./src --watch",
     "test:watch:all": "jest ./src --watchAll",
+    "migrate": "node-pg-migrate",
     "start:dev": "nodemon src/app.ts"
   },
   "keywords": [],
@@ -30,6 +31,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
     "jest": "^27.2.0",
+    "node-pg-migrate": "^6.0.0",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
