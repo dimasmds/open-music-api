@@ -13,6 +13,10 @@ exports.up = (pgm) => {
       notNull: true,
       unique: true,
     },
+    password: {
+      type: 'TEXT',
+      notNull: true,
+    },
     fullname: {
       type: 'TEXT',
       notNull: true,
