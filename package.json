@@ -8,6 +8,7 @@
     "test:watch": "jest ./src --watch",
     "test:watch:all": "jest ./src --watchAll",
     "migrate": "node-pg-migrate",
+    "migrate:test": "node-pg-migrate --envPath .test.env",
     "start:dev": "nodemon src/app.ts"
   },
   "keywords": [],
