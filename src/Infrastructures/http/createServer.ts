@@ -1,9 +1,10 @@
 import Hapi from '@hapi/hapi';
+import config from '../../Commons/config';
 
 const createServer = async () => {
   const server = Hapi.server({
-    host: process.env.APP_HOST,
-    port: process.env.APP_PORT,
+    host: config.server.host,
+    port: config.server.port,
   });
 
   server.route({
