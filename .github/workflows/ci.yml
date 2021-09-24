@@ -48,7 +48,7 @@ jobs:
           HOST: localhost
           PORT: 5000
           PGHOST: localhost
-          PGPORT: 5342
+          PGPORT: 5432
           PGUSER: testing
           PGPASSWORD: testing
           PGDATABASE: openmusic_test
