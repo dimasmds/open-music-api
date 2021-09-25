@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./src --coverage",
-    "test:watch": "jest ./src --watch",
-    "test:watch:all": "jest ./src --watchAll",
+    "test": "jest ./src -i --coverage --detectOpenHandles",
+    "test:watch": "jest ./src --watch -i",
+    "test:watch:all": "jest ./src --watchAll -i",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate --envPath .test.env",
     "start:dev": "nodemon src/app.ts"

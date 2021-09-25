@@ -1,7 +1,8 @@
 import createServer from './Infrastructures/http/createServer';
+import container from './Infrastructures/container/container';
 
 (async () => {
-  const server = await createServer();
+  const server = await createServer(container);
 
   await server.start();
 

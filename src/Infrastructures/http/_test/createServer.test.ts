@@ -1,9 +1,10 @@
+import { Container } from 'instances-container';
 import createServer from '../createServer';
 
 describe('createServer', () => {
   it('should return Hello World when GET /', async () => {
     // Arrange
-    const server = await createServer();
+    const server = await createServer(<Container>{});
 
     // Action
     const response = await server.inject({

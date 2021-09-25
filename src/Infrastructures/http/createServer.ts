@@ -1,7 +1,9 @@
 import Hapi from '@hapi/hapi';
+import { Container } from 'instances-container';
 import config from '../../Commons/config';
+import users from '../../Interfaces/http/api/users';
 
-const createServer = async () => {
+const createServer = async (container: Container) => {
   const server = Hapi.server({
     host: config.server.host,
     port: config.server.port,
@@ -12,6 +14,15 @@ const createServer = async () => {
     path: '/',
     handler: () => ({ message: 'Hello World' }),
   });
+
+  await server.register([
+    {
+      plugin: users,
+      options: {
+        container,
+      },
+    },
+  ]);
 
   return server;
 };
