@@ -4,8 +4,11 @@ import config from '../../Commons/config';
 import users from '../../Interfaces/http/api/users';
 import DomainToHttpErrorTranslator from '../../Commons/exceptions/DomainToHttpErrorTranslator';
 import ClientError from '../../Commons/exceptions/ClientError';
+import Logger from '../../Applications/log/Logger';
 
 const createServer = async (container: Container) => {
+  const logger = <Logger> container.getInstance('Logger');
+
   const server = Hapi.server({
     host: config.server.host,
     port: config.server.port,
@@ -51,6 +54,7 @@ const createServer = async (container: Container) => {
       });
 
       newResponse.code(500);
+      logger.writeError(response);
       return newResponse;
     }
     return response;

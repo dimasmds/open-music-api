@@ -9,6 +9,7 @@ import UserCreationUseCase from '../../Applications/use_cases/users/UserCreation
 import LoginUseCase from '../../Applications/use_cases/authentications/LoginUseCase';
 import RefreshAuthenticationUseCase from '../../Applications/use_cases/authentications/RefreshAuthenticationUseCase';
 import LogoutUseCase from '../../Applications/use_cases/authentications/LogoutUseCase';
+import FileLogger from '../logging/local/FileLogger';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -74,6 +75,12 @@ container.register([
     Class: JwtAuthTokenCreator,
   },
 ]);
+
+/** logger */
+container.register({
+  key: 'Logger',
+  Class: FileLogger,
+});
 
 /** use case */
 container.register([
