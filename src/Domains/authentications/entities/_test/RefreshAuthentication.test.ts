@@ -31,13 +31,13 @@ describe('RefreshAuthentication', () => {
       const payload = {
         refreshToken: 'refresh_token',
       };
-      mockAuthTokenCreator.isSignatureValid = jest.fn(() => Promise.resolve(false));
+      mockAuthTokenCreator.isRefreshTokenSignatureValid = jest.fn(() => Promise.resolve(false));
 
       // Action & Assert
       await expect(refreshAuthentication.create(payload))
         .rejects
         .toThrowError('REFRESH_AUTHENTICATION.REFRESH_TOKEN_NOT_HAVE_VALID_SIGNATURE');
-      expect(mockAuthTokenCreator.isSignatureValid).toBeCalledWith('refresh_token');
+      expect(mockAuthTokenCreator.isRefreshTokenSignatureValid).toBeCalledWith('refresh_token');
     });
 
     it('should throw error when refreshToken not registered in database', async () => {
@@ -46,7 +46,7 @@ describe('RefreshAuthentication', () => {
         refreshToken: 'refresh_token',
       };
 
-      mockAuthTokenCreator.isSignatureValid = () => Promise.resolve(true);
+      mockAuthTokenCreator.isRefreshTokenSignatureValid = () => Promise.resolve(true);
 
       mockAuthenticationRepository.isRefreshTokenRegistered = jest.fn(() => Promise.resolve(false));
 
@@ -62,7 +62,7 @@ describe('RefreshAuthentication', () => {
       const payload = {
         refreshToken: 'refresh_token',
       };
-      mockAuthTokenCreator.isSignatureValid = () => Promise.resolve(true);
+      mockAuthTokenCreator.isRefreshTokenSignatureValid = () => Promise.resolve(true);
       mockAuthenticationRepository.isRefreshTokenRegistered = () => Promise.resolve(true);
 
       mockAuthTokenCreator.getObjectPayload = jest.fn(() => Promise.resolve({ userId: 'user-123', iat: 123123 }));

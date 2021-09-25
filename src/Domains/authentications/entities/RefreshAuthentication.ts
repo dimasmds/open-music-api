@@ -21,7 +21,7 @@ class RefreshAuthentication {
 
     const { refreshToken } = payload;
 
-    const isSignatureValid = await this.authTokenCreator.isSignatureValid(refreshToken);
+    const isSignatureValid = await this.authTokenCreator.isRefreshTokenSignatureValid(refreshToken);
 
     if (!isSignatureValid) {
       throw new Error('REFRESH_AUTHENTICATION.REFRESH_TOKEN_NOT_HAVE_VALID_SIGNATURE');
