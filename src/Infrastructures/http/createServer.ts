@@ -1,7 +1,9 @@
-import Hapi from '@hapi/hapi';
+import Hapi, { Request, ResponseToolkit } from '@hapi/hapi';
 import { Container } from 'instances-container';
 import config from '../../Commons/config';
 import users from '../../Interfaces/http/api/users';
+import DomainToHttpErrorTranslator from '../../Commons/exceptions/DomainToHttpErrorTranslator';
+import ClientError from '../../Commons/exceptions/ClientError';
 
 const createServer = async (container: Container) => {
   const server = Hapi.server({
@@ -23,6 +25,36 @@ const createServer = async (container: Container) => {
       },
     },
   ]);
+
+  server.ext('onPreResponse', (request: Request, h: ResponseToolkit) => {
+    const { response } = request;
+
+    if (response instanceof Error) {
+      const translatedError = DomainToHttpErrorTranslator.translate(response);
+
+      if (translatedError instanceof ClientError) {
+        const newResponse = h.response({
+          status: 'fail',
+          message: translatedError.message,
+        });
+        newResponse.code(translatedError.statusCode);
+        return newResponse;
+      }
+
+      if (!response.isServer) {
+        return response;
+      }
+
+      const newResponse = h.response({
+        status: 'error',
+        message: 'terjadi kegagalan pada server kami',
+      });
+
+      newResponse.code(500);
+      return newResponse;
+    }
+    return response;
+  });
 
   return server;
 };
