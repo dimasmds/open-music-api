@@ -24,7 +24,7 @@ class FileLogger implements Logger {
   private static createLogFileIfItNotExists(filePath: string, fileName: string) {
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath, { recursive: true });
-      fs.writeFileSync(`${filePath}/${fileName}`, '');
+      fs.writeFileSync(`${filePath}/${fileName}`, `log for date ${new Date().toLocaleDateString()}`);
     }
   }
 

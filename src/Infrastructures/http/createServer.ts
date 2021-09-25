@@ -5,6 +5,7 @@ import users from '../../Interfaces/http/api/users';
 import DomainToHttpErrorTranslator from '../../Commons/exceptions/DomainToHttpErrorTranslator';
 import ClientError from '../../Commons/exceptions/ClientError';
 import Logger from '../../Applications/log/Logger';
+import authentications from '../../Interfaces/http/api/authentications';
 
 const createServer = async (container: Container) => {
   const logger = <Logger> container.getInstance('Logger');
@@ -23,6 +24,12 @@ const createServer = async (container: Container) => {
   await server.register([
     {
       plugin: users,
+      options: {
+        container,
+      },
+    },
+    {
+      plugin: authentications,
       options: {
         container,
       },
