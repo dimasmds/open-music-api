@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./src --coverage",
-    "test:watch": "jest ./src --watch",
-    "test:watch:all": "jest ./src --watchAll",
+    "start": "ts-node ./src/app.ts",
+    "test": "jest ./src -i --coverage --detectOpenHandles",
+    "test:watch": "jest ./src --watch -i",
+    "test:watch:all": "jest ./src --watchAll -i",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate --envPath .test.env",
     "start:dev": "nodemon src/app.ts"
@@ -19,8 +20,10 @@
     "@hapi/jwt": "^2.1.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
+    "instances-container": "^2.0.4",
     "nanoid": "^3.1.25",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "simple-node-logger": "^21.8.12"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",
