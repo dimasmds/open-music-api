@@ -53,4 +53,4 @@ jobs:
           PGPASSWORD: testing
           PGDATABASE: openmusic_test
           ACCESS_TOKEN_SECRET: abcde
-          REFRESH_TOKEN_SECRET: abcde
+          REFRESH_TOKEN_SECRET: edcba
