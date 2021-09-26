@@ -19,9 +19,9 @@ class DetailSong {
 
   public genre: string;
 
-  public duration: number;
+  public duration: number | null;
 
-  public albumId: string;
+  public albumId: string | null;
 
   constructor({
     id, title, year, performer, genre, duration, albumId,
