@@ -8,7 +8,7 @@ type DetailSongPayload = {
   albumId: string | null
 }
 
-class DetailSong {
+class SongDetail {
   public id: string;
 
   public title: string;
@@ -36,4 +36,4 @@ class DetailSong {
   }
 }
 
-export default DetailSong;
+export default SongDetail;

@@ -1,6 +1,6 @@
-import DetailSong from '../DetailSong';
+import SongDetail from '../SongDetail';
 
-describe('DetailSong', () => {
+describe('SongDetail', () => {
   it('should create instance correctly', () => {
     const payload = {
       id: 'song-123',
@@ -12,9 +12,9 @@ describe('DetailSong', () => {
       albumId: 'album-123',
     };
 
-    const detailSong = new DetailSong(payload);
+    const detailSong = new SongDetail(payload);
 
-    expect(detailSong).toBeInstanceOf(DetailSong);
+    expect(detailSong).toBeInstanceOf(SongDetail);
     expect(detailSong.id).toEqual(payload.id);
     expect(detailSong.title).toEqual(payload.title);
     expect(detailSong.year).toEqual(payload.year);
