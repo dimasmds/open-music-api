@@ -8,10 +8,8 @@ describe('GetDetailSongUseCase', () => {
   });
 
   it('should throw error when payload not contain id', async () => {
-    const payload = {};
-
     // Action & Assert
-    await expect(getDetailSongUseCase.execute(payload)).rejects.toThrowError('GET_DETAIL_SONG.ID_NOT_DEFINED');
+    await expect(getDetailSongUseCase.execute()).rejects.toThrowError('GET_DETAIL_SONG.ID_NOT_DEFINED');
   });
 
   it('should throw error when id not string', async () => {

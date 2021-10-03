@@ -8,10 +8,8 @@ describe('DeleteAlbumUseCase', () => {
   });
 
   it('should throw error when payload not contain id', async () => {
-    const payload = {};
-
     // Action
-    await expect(deleteAlbumUseCase.execute(payload)).rejects.toThrowError('DELETE_ALBUM.ID_NOT_DEFINED');
+    await expect(deleteAlbumUseCase.execute()).rejects.toThrowError('DELETE_ALBUM.ID_NOT_DEFINED');
   });
 
   it('should throw error when id not string', async () => {
