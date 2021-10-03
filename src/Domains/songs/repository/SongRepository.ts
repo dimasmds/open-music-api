@@ -11,6 +11,7 @@ interface SongRepository {
   persist(songCreation: SongCreation): Promise<string>
   getSongs(): Promise<Song[]>
   update(songUpdate: SongUpdate): Promise<void>
+  deleteSongById(songId: string): Promise<void>
 }
 
 export default SongRepository;
