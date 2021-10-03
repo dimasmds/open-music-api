@@ -9,6 +9,7 @@ interface AlbumRepository {
   persist(albumCreation: AlbumCreation): Promise<string>
   getAlbumById(albumId: string) : Promise<AlbumDetail>
   updateAlbum(albumUpdate: AlbumUpdate): Promise<void>
+  deleteAlbum(albumId: string) : Promise<void>
 }
 
 export default AlbumRepository;
