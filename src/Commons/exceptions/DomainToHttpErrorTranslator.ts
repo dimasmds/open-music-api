@@ -1,5 +1,6 @@
 import AuthenticationError from './AuthenticationError';
 import InvariantError from './InvariantError';
+import NotFoundError from './NotFoundError';
 
 class DomainToHttpErrorTranslator {
   static Directories: any = {
@@ -25,6 +26,26 @@ class DomainToHttpErrorTranslator {
     'LOGOUT.REFRESH_TOKEN_NOT_REGISTERED_IN_DATABASE': new InvariantError('refresh token not registered'),
     'LOGOUT.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('should contain refresh token'),
     'LOGOUT.REFRESH_TOKEN_NOT_STRING': new InvariantError('refresh token should be string'),
+    'ALBUM_CREATION.NOT_CONTAIN_NAME': new InvariantError('new album should contain name'),
+    'ALBUM_CREATION.NAME_NOT_STRING': new InvariantError('new album name should be string'),
+    'ALBUM_CREATION.NOT_CONTAIN_YEAR': new InvariantError('new album should contain year'),
+    'ALBUM_CREATION.YEAR_NOT_NUMBER': new InvariantError('new album year should be number'),
+    'ALBUM_CREATION.YEAR_CANNOT_DECIMAL': new InvariantError('new album year should not be decimal'),
+    'ALBUM_UPDATE.ID_NOT_VALID': new NotFoundError('no album found'),
+    'ALBUM_UPDATE.NOT_CONTAIN_ID': new InvariantError('update album should contain id'),
+    'ALBUM_UPDATE.ID_NOT_STRING': new InvariantError('update album id should be string'),
+    'ALBUM_UPDATE.NOT_CONTAIN_NAME': new InvariantError('update album should contain name'),
+    'ALBUM_UPDATE.NAME_NOT_STRING': new InvariantError('update album name should be string'),
+    'ALBUM_UPDATE.NOT_CONTAIN_YEAR': new InvariantError('update album should contain year'),
+    'ALBUM_UPDATE.YEAR_NOT_NUMBER': new InvariantError('update album year should be number'),
+    'ALBUM_UPDATE.SHOULD_NOT_DECIMAL': new InvariantError('update album year should not decimal'),
+    'DELETE_ALBUM.ID_NOT_VALID': new NotFoundError('no album found'),
+    'DELETE_ALBUM.ID_NOT_DEFINED': new InvariantError('delete album should contain album id'),
+    'DELETE_ALBUM.ID_NOT_STRING': new InvariantError('delete album id should be string'),
+    'GET_ALBUM.ALBUM_NOT_FOUND': new NotFoundError('no album found'),
+    'GET_ALBUM.NOT_CONTAIN_ID': new InvariantError('get album should contain id'),
+    'GET_ALBUM.ID_NOT_STRING': new InvariantError('get album id should string'),
+
   }
 
   static translate(domainError: Error): Error {
