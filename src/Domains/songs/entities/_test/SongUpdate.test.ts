@@ -89,7 +89,7 @@ describe('SongUpdate', () => {
       it('should throw error when duration is not number', async () => {
         await expect(songUpdate.create({
           title: 'Fix you', year: 2000, genre: 'pop', performer: 'Coldplay', id: 'song-123', duration: 'hello',
-        })).rejects.toThrowError('SONG_UPDATE.DURATION_NOT_STRING');
+        })).rejects.toThrowError('SONG_UPDATE.DURATION_NOT_NUMBER');
       });
 
       it('should create song update correctly', async () => {
