@@ -78,7 +78,6 @@ class DomainToHttpErrorTranslator {
     'GET_DETAIL_SONG.SONG_NOT_FOUND': new NotFoundError('no song found'),
     'GET_DETAIL_SONG.ID_NOT_DEFINED': new InvariantError('get detail song should contain id'),
     'GET_DETAIL_SONG.ID_NOT_STRING': new InvariantError('get detail song id should be a string'),
-
   }
 
   static translate(domainError: Error): Error {
