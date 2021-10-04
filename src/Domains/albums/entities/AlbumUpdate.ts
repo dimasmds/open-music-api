@@ -7,7 +7,7 @@ class AlbumUpdate {
 
   public name: string;
 
-  public year: number;
+  public year: string;
 
   constructor(albumRepository: AlbumRepository) {
     this.albumRepository = albumRepository;
