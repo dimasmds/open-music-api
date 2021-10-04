@@ -14,7 +14,7 @@ describe('AlbumRepositoryPostgres', () => {
   });
 
   beforeEach(async () => {
-    await AlbumsTableTestHelper.clean();
+    await AlbumsTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {

@@ -20,7 +20,7 @@ const AlbumsTableTestHelper = {
     return result.rows;
   },
 
-  async clean() {
+  async cleanTable() {
     await pool.query('DELETE FROM albums WHERE 1 = 1');
   },
 };
