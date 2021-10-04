@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import pool from '../../../database/postgres/pool';
 
 const AlbumsTableTestHelper = {
