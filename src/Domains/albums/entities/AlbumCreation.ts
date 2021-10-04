@@ -1,7 +1,7 @@
 class AlbumCreation {
   public name: string;
 
-  public year: string;
+  public year: number;
 
   async create(payload: any): Promise<AlbumCreation> {
     AlbumCreation.verifyPayload(payload);
