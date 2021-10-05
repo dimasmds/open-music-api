@@ -7,6 +7,7 @@ import ClientError from '../../Commons/exceptions/ClientError';
 import Logger from '../../Applications/log/Logger';
 import authentications from '../../Interfaces/http/api/authentications';
 import albums from '../../Interfaces/http/api/albums';
+import songs from '../../Interfaces/http/api/songs';
 
 const createServer = async (container: Container) => {
   const logger = <Logger> container.getInstance('Logger');
@@ -37,6 +38,12 @@ const createServer = async (container: Container) => {
     },
     {
       plugin: albums,
+      options: {
+        container,
+      },
+    },
+    {
+      plugin: songs,
       options: {
         container,
       },

@@ -11,7 +11,7 @@ class GetDetailSongUseCase {
   async execute(payload: any = {}) {
     GetDetailSongUseCase.verifyPayload(payload);
     const { id } = payload;
-    const song = this.songRepository.getSongById(id);
+    const song = await this.songRepository.getSongById(id);
 
     if (song === null) {
       throw new Error('GET_DETAIL_SONG.SONG_NOT_FOUND');
