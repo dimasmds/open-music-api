@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/app.ts",
-    "test": "jest ./src/Infrastructures/http/_test/songs.test.ts -i --coverage --detectOpenHandles",
+    "test": "jest ./src -i --coverage --detectOpenHandles",
     "test:watch": "jest ./src --watch -i",
     "test:watch:all": "jest ./src --watchAll -i",
     "migrate": "node-pg-migrate",
