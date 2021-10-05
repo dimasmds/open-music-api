@@ -108,7 +108,7 @@ class SongUpdate {
 
     if (duration) {
       if (typeof duration !== 'number') {
-        throw new Error('SONG_UPDATE.DURATION_NOT_STRING');
+        throw new Error('SONG_UPDATE.DURATION_NOT_NUMBER');
       }
     }
 

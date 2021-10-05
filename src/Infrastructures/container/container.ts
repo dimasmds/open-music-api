@@ -10,6 +10,17 @@ import LoginUseCase from '../../Applications/use_cases/authentications/LoginUseC
 import RefreshAuthenticationUseCase from '../../Applications/use_cases/authentications/RefreshAuthenticationUseCase';
 import LogoutUseCase from '../../Applications/use_cases/authentications/LogoutUseCase';
 import FileLogger from '../logging/local/FileLogger';
+import SongRepositoryPostgres from '../repository/SongRepositoryPostgres';
+import AlbumRepositoryPostgres from '../repository/AlbumRepositoryPostgres';
+import AlbumCreationUseCase from '../../Applications/use_cases/albums/AlbumCreationUseCase';
+import DeleteAlbumUseCase from '../../Applications/use_cases/albums/DeleteAlbumUseCase';
+import GetAlbumDetailUseCase from '../../Applications/use_cases/albums/GetAlbumDetailUseCase';
+import UpdateAlbumUseCase from '../../Applications/use_cases/albums/UpdateAlbumUseCase';
+import DeleteSongUseCase from '../../Applications/use_cases/songs/DeleteSongUseCase';
+import GetDetailSongUseCase from '../../Applications/use_cases/songs/GetDetailSongUseCase';
+import GetSongsUseCase from '../../Applications/use_cases/songs/GetSongsUseCase';
+import SongCreationUseCase from '../../Applications/use_cases/songs/SongCreationUseCase';
+import UpdateSongUseCase from '../../Applications/use_cases/songs/UpdateSongUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -30,6 +41,14 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'authenticationRepository',
       internal: 'AuthenticationRepository',
+    },
+    {
+      name: 'songRepository',
+      internal: 'SongRepository',
+    },
+    {
+      name: 'albumRepository',
+      internal: 'AlbumRepository',
     },
   ],
 };
@@ -60,6 +79,16 @@ container.register([
   {
     key: 'AuthenticationRepository',
     Class: AuthenticationRepositoryPostgres,
+    parameter: repositoryParameter,
+  },
+  {
+    key: 'SongRepository',
+    Class: SongRepositoryPostgres,
+    parameter: repositoryParameter,
+  },
+  {
+    key: 'AlbumRepository',
+    Class: AlbumRepositoryPostgres,
     parameter: repositoryParameter,
   },
 ]);
@@ -98,6 +127,42 @@ container.register([
   },
   {
     Class: LogoutUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: AlbumCreationUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: DeleteAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetAlbumDetailUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: UpdateAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: DeleteSongUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetDetailSongUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetSongsUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: SongCreationUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: UpdateSongUseCase,
     parameter: useCaseParameter,
   },
 ]);

@@ -6,6 +6,8 @@ import DomainToHttpErrorTranslator from '../../Commons/exceptions/DomainToHttpEr
 import ClientError from '../../Commons/exceptions/ClientError';
 import Logger from '../../Applications/log/Logger';
 import authentications from '../../Interfaces/http/api/authentications';
+import albums from '../../Interfaces/http/api/albums';
+import songs from '../../Interfaces/http/api/songs';
 
 const createServer = async (container: Container) => {
   const logger = <Logger> container.getInstance('Logger');
@@ -34,6 +36,18 @@ const createServer = async (container: Container) => {
         container,
       },
     },
+    {
+      plugin: albums,
+      options: {
+        container,
+      },
+    },
+    {
+      plugin: songs,
+      options: {
+        container,
+      },
+    },
   ]);
 
   server.ext('onPreResponse', (request: Request, h: ResponseToolkit) => {
@@ -48,6 +62,7 @@ const createServer = async (container: Container) => {
           message: translatedError.message,
         });
         newResponse.code(translatedError.statusCode);
+        logger.writeClientError(response);
         return newResponse;
       }
 
