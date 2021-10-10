@@ -17,6 +17,7 @@ class AddSongToPlaylistUseCase {
     const playlistSongCreation = new PlaylistSongCreation(
       this.playlistRepository, this.songRepository,
     );
+
     await playlistSongCreation.create(payload);
 
     await this.playlistRepository.persistSongToPlaylist(playlistSongCreation);
