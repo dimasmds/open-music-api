@@ -12,6 +12,7 @@ interface PlaylistRepository {
   isPlaylistIdValid(playlistId: string): Promise<boolean>
   isAnOwnerPlaylist(playlistId: string, userId: string): Promise<boolean>
   deletePlaylist(playlistId: string): Promise<void>
+  deleteSongInPlaylist(playlistId: string, songId: string): Promise<void>
 }
 
 export default PlaylistRepository;
