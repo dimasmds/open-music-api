@@ -4,6 +4,7 @@ import AuthenticationRepository from '../../../Domains/authentications/repositor
 import AuthTokenCreator from '../../../Domains/authentications/security/AuthTokenCreator';
 import AlbumRepository from '../../../Domains/albums/repository/AlbumRepository';
 import SongRepository from '../../../Domains/songs/repository/SongRepository';
+import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
 
 interface UseCaseDependencies {
   userRepository?: UserRepository
@@ -11,7 +12,8 @@ interface UseCaseDependencies {
   albumRepository?: AlbumRepository
   songRepository?: SongRepository
   passwordHash?: PasswordHash
-  authTokenCreator?: AuthTokenCreator
+  authTokenCreator?: AuthTokenCreator,
+  playlistRepository?: PlaylistRepository
 }
 
 export default UseCaseDependencies;
