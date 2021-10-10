@@ -29,7 +29,10 @@ class GetDetailPlaylistUseCase {
       throw new Error('GET_DETAIL_PLAYLIST.USER_NOT_OWNED_PLAYLIST');
     }
 
-    return this.playlistRepository.getPlaylist(playlistId);
+    const playlist = await this.playlistRepository.getPlaylist(playlistId);
+    playlist.songs = await this.songRepository.getSongsInPlaylist(playlistId);
+
+    return playlist;
   }
 
   private static verifyPayload({ playlistId, userId }: any) {

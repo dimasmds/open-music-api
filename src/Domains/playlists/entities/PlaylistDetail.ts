@@ -7,9 +7,9 @@ class PlaylistDetail {
 
   public username: string;
 
-  public songs: Song[];
+  public songs: Song[] | null;
 
-  constructor(id: string, name: string, username: string, songs: Song[]) {
+  constructor(id: string, name: string, username: string, songs: Song[] | null = null) {
     this.id = id;
     this.name = name;
     this.username = username;
