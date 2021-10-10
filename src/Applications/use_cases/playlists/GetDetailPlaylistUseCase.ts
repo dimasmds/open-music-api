@@ -1,17 +1,13 @@
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
-import UserRepository from '../../../Domains/users/repository/UserRepository';
 import SongRepository from '../../../Domains/songs/repository/SongRepository';
 
 class GetDetailPlaylistUseCase {
-  private userRepository: UserRepository;
-
   private playlistRepository: PlaylistRepository;
 
   private songRepository: SongRepository;
 
-  constructor({ userRepository, playlistRepository, songRepository } : UseCaseDependencies) {
-    this.userRepository = userRepository;
+  constructor({ playlistRepository, songRepository } : UseCaseDependencies) {
     this.playlistRepository = playlistRepository;
     this.songRepository = songRepository;
   }
