@@ -12,6 +12,7 @@ interface SongRepository {
   getSongs(): Promise<Song[]>
   update(songUpdate: SongUpdate): Promise<void>
   deleteSongById(songId: string): Promise<void>
+  getSongsInPlaylist(playlistId: string) : Promise<Song[]>
 }
 
 export default SongRepository;
