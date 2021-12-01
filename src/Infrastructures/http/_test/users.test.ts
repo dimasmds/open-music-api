@@ -5,6 +5,7 @@ import createServer from '../createServer';
 import container from '../../container/container';
 
 describe('when /users', () => {
+  jest.setTimeout(20000);
   let server: Server;
 
   beforeEach(async () => {
