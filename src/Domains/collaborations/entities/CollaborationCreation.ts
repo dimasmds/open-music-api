@@ -18,7 +18,7 @@ class CollaborationCreation {
   async create(payload: any = {}) {
     CollaborationCreation.validatePayload(payload);
 
-    const { userId, playlistId } = payload;
+    const { userId, playlistId, ownerId } = payload;
     const isUserValid = await this.userRepository.isUserIdValid(userId);
 
     if (!isUserValid) {
@@ -31,9 +31,17 @@ class CollaborationCreation {
       throw new Error('COLLABORATION_CREATION.PLAYLIST_NOT_FOUND');
     }
 
-    const isAnOwnerPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
+    const isAnOwnerPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, ownerId);
 
-    if (isAnOwnerPlaylist) {
+    if (!isAnOwnerPlaylist) {
+      throw new Error('COLLABORATION_CREATION.AUTH_USER_NOT_AN_OWNER');
+    }
+
+    const isCollaboratorAnOwner = await this.playlistRepository.isAnOwnerPlaylist(
+      playlistId, userId,
+    );
+
+    if (isCollaboratorAnOwner) {
       throw new Error('COLLABORATION_CREATION.USER_IS_PLAYLIST_OWNER');
     }
 
@@ -44,7 +52,7 @@ class CollaborationCreation {
   }
 
   private static validatePayload(payload: any) {
-    const { playlistId, userId } = payload;
+    const { playlistId, userId, ownerId } = payload;
 
     if (!playlistId) {
       throw new Error('COLLABORATION_CREATION.PLAYLIST_ID_REQUIRED');
@@ -60,6 +68,14 @@ class CollaborationCreation {
 
     if (typeof userId !== 'string') {
       throw new Error('COLLABORATION_CREATION.USER_ID_SHOULD_BE_STRING');
+    }
+
+    if (!ownerId) {
+      throw new Error('COLLABORATION_CREATION.OWNER_ID_REQUIRED');
+    }
+
+    if (typeof ownerId !== 'string') {
+      throw new Error('COLLABORATION_CREATION.OWNER_ID_SHOULD_BE_STRING');
     }
   }
 }
