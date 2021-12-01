@@ -97,4 +97,25 @@ describe('UserRepositoryPostgres', () => {
       expect(userId).toEqual('user-123');
     });
   });
+
+  describe('isUserIdValid', () => {
+    it('should return false if user id not found in database', async () => {
+      // Action
+      const result = await userRepositoryPostgres.isUserIdValid('user-123');
+
+      // Assert
+      expect(result).toBe(false);
+    });
+
+    it('should return true if user id founded in database', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+
+      // Action
+      const result = await userRepositoryPostgres.isUserIdValid('user-123');
+
+      // Assert
+      expect(result).toBe(true);
+    });
+  });
 });
