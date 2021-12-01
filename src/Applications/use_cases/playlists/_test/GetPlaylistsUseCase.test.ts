@@ -13,7 +13,7 @@ describe('GetPlaylistsUseCase', () => {
   });
 
   it('should throw error when payload not contain user id', async () => {
-    await expect(getPlaylistUseCase.execute({}))
+    await expect(getPlaylistUseCase.execute())
       .rejects
       .toThrow('GET_PLAYLIST.NOT_CONTAIN_USER_ID');
   });
