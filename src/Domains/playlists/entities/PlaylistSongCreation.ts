@@ -6,9 +6,9 @@ class PlaylistSongCreation {
 
   private songRepository: SongRepository;
 
-  private playlistId: string;
+  public playlistId: string;
 
-  private songId: string;
+  public songId: string;
 
   constructor(playlistRepository: PlaylistRepository, songRepository: SongRepository) {
     this.playlistRepository = playlistRepository;
