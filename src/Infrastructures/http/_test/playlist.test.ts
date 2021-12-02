@@ -70,4 +70,28 @@ describe('when /playlists', () => {
       expect(playlist2.name).toEqual('My Playlist 2');
     });
   });
+
+  describe('when DELETE /playlists/{id}', () => {
+    it('should response 200 and correct message', async () => {
+      // Arrange
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      const { data: { playlistId } } = await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/playlists/${playlistId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.message).toEqual('Playlist deleted');
+    });
+  });
 });

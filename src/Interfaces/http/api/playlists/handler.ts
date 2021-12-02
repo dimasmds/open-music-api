@@ -3,6 +3,8 @@ import { Request, ResponseToolkit } from '@hapi/hapi';
 import PlaylistCreationUseCase
   from '../../../../Applications/use_cases/playlists/PlaylistCreationUseCase';
 import GetPlaylistsUseCase from '../../../../Applications/use_cases/playlists/GetPlaylistsUseCase';
+import DeletePlaylistUseCase
+  from '../../../../Applications/use_cases/playlists/DeletePlaylistUseCase';
 
 class PlaylistsHandler {
   private container: Container;
@@ -13,6 +15,7 @@ class PlaylistsHandler {
     // bind
     this.postPlaylistHandler = this.postPlaylistHandler.bind(this);
     this.getPlaylistsHandler = this.getPlaylistsHandler.bind(this);
+    this.deletePlaylistByIdHandler = this.deletePlaylistByIdHandler.bind(this);
   }
 
   async postPlaylistHandler(request: Request, h: ResponseToolkit) {
@@ -48,6 +51,24 @@ class PlaylistsHandler {
       status: 'success',
       data: {
         playlists,
+      },
+    };
+  }
+
+  async deletePlaylistByIdHandler(request: Request) {
+    const useCase = this.container.getInstance(
+      DeletePlaylistUseCase.name,
+    ) as DeletePlaylistUseCase;
+
+    const { id: playlistId } = request.params;
+    const { userId } = request.auth.credentials;
+
+    await useCase.execute({ playlistId, userId });
+
+    return {
+      status: 'success',
+      data: {
+        message: 'Playlist deleted',
       },
     };
   }
