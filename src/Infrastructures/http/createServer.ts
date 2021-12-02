@@ -10,6 +10,7 @@ import authentications from '../../Interfaces/http/api/authentications';
 import albums from '../../Interfaces/http/api/albums';
 import songs from '../../Interfaces/http/api/songs';
 import playlists from '../../Interfaces/http/api/playlists';
+import collaborations from '../../Interfaces/http/api/collaborations';
 
 const createServer = async (container: Container) => {
   const logger = <Logger> container.getInstance('Logger');
@@ -76,6 +77,12 @@ const createServer = async (container: Container) => {
     },
     {
       plugin: playlists,
+      options: {
+        container,
+      },
+    },
+    {
+      plugin: collaborations,
       options: {
         container,
       },

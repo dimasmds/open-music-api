@@ -24,7 +24,7 @@ class CollaborationDeletion {
     const isPlaylistValid = await this.playlistRepository.isPlaylistIdValid(playlistId);
 
     if (!isPlaylistValid) {
-      throw new Error('COLLABORATION_DELETION_PLAYLIST_NOT_FOUND');
+      throw new Error('COLLABORATION_DELETION.PLAYLIST_NOT_FOUND');
     }
 
     const isValidOwner = await this.playlistRepository.isAnOwnerPlaylist(playlistId, ownerId);

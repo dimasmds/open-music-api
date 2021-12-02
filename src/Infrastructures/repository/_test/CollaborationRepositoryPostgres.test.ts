@@ -21,6 +21,10 @@ describe('CollaborationRepositoryPostgres', () => {
     await CollaborationsTableTestHelper.cleanTable();
   });
 
+  afterAll(async () => {
+    await pool.end();
+  });
+
   describe('persist', () => {
     it('should persist collaboration to database', async () => {
       // Arrange
