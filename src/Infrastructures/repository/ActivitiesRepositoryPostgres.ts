@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import ActivitiesRepository from '../../Domains/activities/repository/ActivitiesRepository';
 import RepositoryDependencies from './definitions/RepositoryDependencies';
 import NewActivity from '../../Domains/activities/entities/NewActivity';
+import Activity from '../../Domains/activities/entities/Activity';
 
 class ActivitiesRepositoryPostgres implements ActivitiesRepository {
   private pool: Pool;
@@ -26,6 +27,23 @@ class ActivitiesRepositoryPostgres implements ActivitiesRepository {
     };
 
     await this.pool.query(query);
+  }
+
+  async getActivitiesInPlaylist(playlistId: string): Promise<Activity[]> {
+    const query = {
+      text: `SELECT users.username, songs.title, playlist_song_activities.action, playlist_song_activities.time
+      FROM playlist_song_activities
+      JOIN songs ON playlist_song_activities.song_id = songs.id
+      JOIN users ON playlist_song_activities.user_id = users.id
+      WHERE playlist_song_activities.playlist_id = $1`,
+      values: [playlistId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return result.rows.map((row) => ({
+      username: row.username, title: row.title, action: row.action, time: row.time,
+    }));
   }
 }
 

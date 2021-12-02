@@ -1,5 +1,5 @@
 type NewActivity = {
-  playlistId: string
+  playlistId?: string
   songId: string
   userId: string
   action: 'add' | 'delete',
