@@ -21,6 +21,7 @@ import GetDetailSongUseCase from '../../Applications/use_cases/songs/GetDetailSo
 import GetSongsUseCase from '../../Applications/use_cases/songs/GetSongsUseCase';
 import SongCreationUseCase from '../../Applications/use_cases/songs/SongCreationUseCase';
 import UpdateSongUseCase from '../../Applications/use_cases/songs/UpdateSongUseCase';
+import PlaylistRepositoryPostgres from '../repository/PlaylistRepositoryPostgres';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -49,6 +50,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'albumRepository',
       internal: 'AlbumRepository',
+    },
+    {
+      name: 'playlistRepository',
+      internal: 'PlaylistRepository',
     },
   ],
 };
@@ -89,6 +94,11 @@ container.register([
   {
     key: 'AlbumRepository',
     Class: AlbumRepositoryPostgres,
+    parameter: repositoryParameter,
+  },
+  {
+    key: 'PlaylistRepository',
+    Class: PlaylistRepositoryPostgres,
     parameter: repositoryParameter,
   },
 ]);
