@@ -36,6 +36,21 @@ const ServerTestHelper = {
     return JSON.parse(response.payload);
   },
 
+  async login({ username = 'dimasmds', password = 'secret' } = {}) {
+    const server = await createServer(container);
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/authentications',
+      payload: {
+        username,
+        password,
+      },
+    });
+
+    return JSON.parse(response.payload);
+  },
+
   async userCreation({ username = 'dimasmds', password = 'secret', fullname = 'Dimas Maulana' } = {}) {
     const server = await createServer(container);
 

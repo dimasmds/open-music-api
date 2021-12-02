@@ -33,6 +33,10 @@ import PlaylistCreationUseCase
 import DeleteSongInPlaylistUseCase
   from '../../Applications/use_cases/playlists/DeleteSongInPlaylistUseCase';
 import CollaborationRepositoryPostgres from '../repository/CollaborationRepositoryPostgres';
+import CollaborationCreationUseCase
+  from '../../Applications/use_cases/collaborations/CollaborationCreationUseCase';
+import CollaborationDeletionUseCase
+  from '../../Applications/use_cases/collaborations/CollaborationDeletionUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -65,6 +69,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'playlistRepository',
       internal: 'PlaylistRepository',
+    },
+    {
+      name: 'collaborationRepository',
+      internal: 'CollaborationRepository',
     },
   ],
 };
@@ -213,6 +221,14 @@ container.register([
   },
   {
     Class: PlaylistCreationUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: CollaborationCreationUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: CollaborationDeletionUseCase,
     parameter: useCaseParameter,
   },
 ]);
