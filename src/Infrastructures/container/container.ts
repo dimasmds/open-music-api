@@ -37,6 +37,7 @@ import CollaborationCreationUseCase
   from '../../Applications/use_cases/collaborations/CollaborationCreationUseCase';
 import CollaborationDeletionUseCase
   from '../../Applications/use_cases/collaborations/CollaborationDeletionUseCase';
+import ActivitiesRepositoryPostgres from '../repository/ActivitiesRepositoryPostgres';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -73,6 +74,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'collaborationRepository',
       internal: 'CollaborationRepository',
+    },
+    {
+      name: 'activitiesRepository',
+      internal: 'ActivitiesRepository',
     },
   ],
 };
@@ -123,6 +128,11 @@ container.register([
   {
     key: 'CollaborationRepository',
     Class: CollaborationRepositoryPostgres,
+    parameter: repositoryParameter,
+  },
+  {
+    key: 'ActivitiesRepository',
+    Class: ActivitiesRepositoryPostgres,
     parameter: repositoryParameter,
   },
 ]);
