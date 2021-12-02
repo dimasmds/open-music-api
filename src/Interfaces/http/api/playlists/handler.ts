@@ -7,6 +7,8 @@ import DeletePlaylistUseCase
   from '../../../../Applications/use_cases/playlists/DeletePlaylistUseCase';
 import AddSongToPlaylistUseCase
   from '../../../../Applications/use_cases/playlists/AddSongToPlaylistUseCase';
+import GetDetailPlaylistUseCase
+  from '../../../../Applications/use_cases/playlists/GetDetailPlaylistUseCase';
 
 class PlaylistsHandler {
   private container: Container;
@@ -19,6 +21,7 @@ class PlaylistsHandler {
     this.getPlaylistsHandler = this.getPlaylistsHandler.bind(this);
     this.deletePlaylistByIdHandler = this.deletePlaylistByIdHandler.bind(this);
     this.postPlaylistSongsHandler = this.postPlaylistSongsHandler.bind(this);
+    this.getPlaylistSongsHandler = this.getPlaylistSongsHandler.bind(this);
   }
 
   async postPlaylistHandler(request: Request, h: ResponseToolkit) {
@@ -95,6 +98,24 @@ class PlaylistsHandler {
     });
     response.code(201);
     return response;
+  }
+
+  async getPlaylistSongsHandler(request: Request) {
+    const useCase = this.container.getInstance(
+      GetDetailPlaylistUseCase.name,
+    ) as GetDetailPlaylistUseCase;
+
+    const { id: playlistId } = request.params;
+    const { userId } = request.auth.credentials;
+
+    const playlists = await useCase.execute({ playlistId, userId });
+
+    return {
+      status: 'success',
+      data: {
+        playlists,
+      },
+    };
   }
 }
 

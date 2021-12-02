@@ -5,6 +5,8 @@ import PlaylistsTableTestHelper from '../../repository/_test/_helper/PlaylistsTa
 import ServerTestHelper from './helper/ServerTestHelper';
 import createServer from '../createServer';
 import container from '../../container/container';
+import PlaylistSongsTableTestHelper
+  from '../../repository/_test/_helper/PlaylistSongsTableTestHelper';
 
 describe('when /playlists', () => {
   jest.setTimeout(20000);
@@ -120,6 +122,38 @@ describe('when /playlists', () => {
       expect(response.statusCode).toBe(201);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.message).toEqual('Song added to playlist');
+    });
+  });
+
+  describe('when GET /playlists/{id}/songs', () => {
+    it('should response 200 and return detail playlist with songs inside it', async () => {
+      // Arrange
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      const { data: { playlistId } } = await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      await SongsTableTestHelper.addSong({ id: 'song-123' });
+      await SongsTableTestHelper.addSong({ id: 'song-456' });
+      await PlaylistSongsTableTestHelper.addPlaylistSongs({ id: 'psongs-123', playlistId, songId: 'song-123' });
+      await PlaylistSongsTableTestHelper.addPlaylistSongs({ id: 'psongs-456', playlistId, songId: 'song-456' });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/playlists/${playlistId}/songs`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.playlist.name).toEqual('My Playlist');
+      expect(responseJson.data.playlist.songs.length).toBe(2);
+      const [song1, song2] = responseJson.data.playlist.songs;
+      expect(song1.id).toEqual('song-123');
+      expect(song2.id).toEqual('song-456');
     });
   });
 });
