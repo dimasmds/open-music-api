@@ -7,6 +7,7 @@ import createServer from '../createServer';
 import container from '../../container/container';
 import PlaylistSongsTableTestHelper
   from '../../repository/_test/_helper/PlaylistSongsTableTestHelper';
+import pool from '../../database/postgres/pool';
 
 describe('when /playlists', () => {
   jest.setTimeout(20000);
@@ -16,6 +17,10 @@ describe('when /playlists', () => {
     await UsersTableTestHelper.cleanTable();
     await PlaylistsTableTestHelper.cleanTable();
     await PlaylistsTableTestHelper.cleanTable();
+  });
+
+  afterAll(async () => {
+    await pool.end();
   });
 
   describe('when POST /playlist', () => {

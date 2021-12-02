@@ -5,6 +5,7 @@ import CollaborationsTableTestHelper
 import ServerTestHelper from './helper/ServerTestHelper';
 import createServer from '../createServer';
 import container from '../../container/container';
+import pool from '../../database/postgres/pool';
 
 describe('when /collaborations', () => {
   jest.setTimeout(30000);
@@ -12,6 +13,10 @@ describe('when /collaborations', () => {
     await UsersTableTestHelper.cleanTable();
     await PlaylistsTableTestHelper.cleanTable();
     await CollaborationsTableTestHelper.cleanTable();
+  });
+
+  afterAll(async () => {
+    await pool.end();
   });
 
   describe('when POST /collaborations', () => {
