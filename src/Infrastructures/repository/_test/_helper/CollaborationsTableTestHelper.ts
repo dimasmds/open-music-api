@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import pool from '../../../database/postgres/pool';
 
 const CollaborationsTableTestHelper = {
@@ -8,6 +9,15 @@ const CollaborationsTableTestHelper = {
     };
     const { rows } = await pool.query(query);
     return rows;
+  },
+
+  async addCollaboration({ id = 'collaboration-123', playlistId = 'playlist-123', userId = 'user-123' }) {
+    const query = {
+      text: 'INSERT INTO collaborations VALUES ($1, $2, $3)',
+      values: [id, playlistId, userId],
+    };
+
+    await pool.query(query);
   },
 
   async cleanTable() {
