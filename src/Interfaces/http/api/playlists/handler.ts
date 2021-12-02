@@ -111,12 +111,12 @@ class PlaylistsHandler {
     const { id: playlistId } = request.params;
     const { userId } = request.auth.credentials;
 
-    const playlists = await useCase.execute({ playlistId, userId });
+    const playlist = await useCase.execute({ playlistId, userId });
 
     return {
       status: 'success',
       data: {
-        playlists,
+        playlist,
       },
     };
   }
