@@ -22,6 +22,14 @@ import GetSongsUseCase from '../../Applications/use_cases/songs/GetSongsUseCase'
 import SongCreationUseCase from '../../Applications/use_cases/songs/SongCreationUseCase';
 import UpdateSongUseCase from '../../Applications/use_cases/songs/UpdateSongUseCase';
 import PlaylistRepositoryPostgres from '../repository/PlaylistRepositoryPostgres';
+import AddSongToPlaylistUseCase
+  from '../../Applications/use_cases/playlists/AddSongToPlaylistUseCase';
+import DeletePlaylistUseCase from '../../Applications/use_cases/playlists/DeletePlaylistUseCase';
+import GetDetailPlaylistUseCase
+  from '../../Applications/use_cases/playlists/GetDetailPlaylistUseCase';
+import GetPlaylistsUseCase from '../../Applications/use_cases/playlists/GetPlaylistsUseCase';
+import PlaylistCreationUseCase
+  from '../../Applications/use_cases/playlists/PlaylistCreationUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -173,6 +181,26 @@ container.register([
   },
   {
     Class: UpdateSongUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: AddSongToPlaylistUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: DeletePlaylistUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetDetailPlaylistUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetPlaylistsUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: PlaylistCreationUseCase,
     parameter: useCaseParameter,
   },
 ]);
