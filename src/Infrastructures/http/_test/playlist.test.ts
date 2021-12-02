@@ -94,4 +94,32 @@ describe('when /playlists', () => {
       expect(responseJson.data.message).toEqual('Playlist deleted');
     });
   });
+  describe('when POST /playlists/{id}/songs', () => {
+    it('should response 201 and correct message', async () => {
+      // Arrange
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      const { data: { playlistId } } = await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      await SongsTableTestHelper.addSong({ id: 'song-123' });
+      const server = await createServer(container);
+      const payload = {
+        songId: 'song-123',
+      };
+
+      // Action
+      const response = await server.inject({
+        method: 'POST',
+        url: `/playlists/${playlistId}/songs`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        payload,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(201);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.message).toEqual('Song added to playlist');
+    });
+  });
 });
