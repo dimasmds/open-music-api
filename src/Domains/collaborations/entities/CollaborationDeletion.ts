@@ -7,9 +7,9 @@ class CollaborationDeletion {
 
   private userRepository: UserRepository;
 
-  private userId: string;
+  public userId: string;
 
-  private playlistId: string;
+  public playlistId: string;
 
   constructor(playlistRepository: PlaylistRepository, userRepository: UserRepository) {
     this.playlistRepository = playlistRepository;

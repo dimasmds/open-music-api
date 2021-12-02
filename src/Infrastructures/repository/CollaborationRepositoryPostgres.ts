@@ -8,15 +8,22 @@ import RepositoryDependencies from './definitions/RepositoryDependencies';
 class CollaborationRepositoryPostgres implements CollaborationRepository {
   private pool: Pool;
 
-  private idGenerator: Function;
+  private readonly idGenerator: Function;
 
   constructor({ pool, idGenerator } : RepositoryDependencies) {
     this.pool = pool;
     this.idGenerator = idGenerator;
   }
 
-  delete(collaborationDeletion: CollaborationDeletion): Promise<void> {
-    return Promise.resolve(undefined);
+  async delete(collaborationDeletion: CollaborationDeletion): Promise<void> {
+    const { playlistId, userId } = collaborationDeletion;
+
+    const query = {
+      text: 'DELETE FROM collaborations WHERE playlist_id = $1 AND user_id = $2',
+      values: [playlistId, userId],
+    };
+
+    await this.pool.query(query);
   }
 
   async persist(collaborationCreation: CollaborationCreation): Promise<string> {

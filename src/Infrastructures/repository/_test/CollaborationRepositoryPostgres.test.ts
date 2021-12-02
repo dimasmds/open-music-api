@@ -6,6 +6,7 @@ import CollaborationsTableTestHelper from './_helper/CollaborationsTableTestHelp
 import CollaborationCreation from '../../../Domains/collaborations/entities/CollaborationCreation';
 import UserRepository from '../../../Domains/users/repository/UserRepository';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
+import CollaborationDeletion from '../../../Domains/collaborations/entities/CollaborationDeletion';
 
 describe('CollaborationRepositoryPostgres', () => {
   const fakeIdGenerator = () => '123';
@@ -39,6 +40,23 @@ describe('CollaborationRepositoryPostgres', () => {
       const collaborations = await CollaborationsTableTestHelper.findCollaboration({ playlistId: 'playlist-123', userId: 'user-456' });
       expect(collaborations.length).toBe(1);
       expect(collaborationId).toBe('collaboration-123');
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete collaboration from database', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dimasmds' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dicoding' });
+      await PlaylistsTableTestHelper.addPlaylist({ owner: 'user-123' });
+      await collaborationRepositoryPostgres.persist({ playlistId: 'playlist-123', userId: 'user-456' } as CollaborationCreation);
+
+      // Action
+      await collaborationRepositoryPostgres.delete({ playlistId: 'playlist-123', userId: 'user-456' } as CollaborationDeletion);
+
+      // Assert
+      const collaborations = await CollaborationsTableTestHelper.findCollaboration({ playlistId: 'playlist-123', userId: 'user-456' });
+      expect(collaborations.length).toBe(0);
     });
   });
 });
