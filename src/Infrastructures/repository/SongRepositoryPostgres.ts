@@ -112,6 +112,22 @@ class SongRepositoryPostgres implements SongRepository {
 
     await this.pool.query(query);
   }
+
+  async getSongsInPlaylist(playlistId: string): Promise<Song[]> {
+    const query = {
+      text: `SELECT songs.id, songs.title, songs.performer, songs.genre, songs.year, songs.duration, songs.album_id 
+      FROM songs 
+      JOIN playlist_songs ON songs.id = playlist_songs.song_id 
+      WHERE playlist_songs.playlist_id = $1`,
+      values: [playlistId],
+    };
+
+    const result = await this.pool.query(query);
+
+    const songsRaw = result.rows;
+
+    return songsRaw.map((songRaw: any) => new Song({ ...songRaw }));
+  }
 }
 
 export default SongRepositoryPostgres;

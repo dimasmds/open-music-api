@@ -7,6 +7,9 @@ import AlbumsTableTestHelper from './_helper/AlbumsTableTestHelper';
 import SongDetail from '../../../Domains/songs/entities/SongDetail';
 import SongUpdate from '../../../Domains/songs/entities/SongUpdate';
 import SongRepository from '../../../Domains/songs/repository/SongRepository';
+import PlaylistsTableTestHelper from './_helper/PlaylistsTableTestHelper';
+import UsersTableTestHelper from './_helper/UsersTableTestHelper';
+import PlaylistSongsTableTestHelper from './_helper/PlaylistSongsTableTestHelper';
 
 describe('SongRepositoryPostgres', () => {
   const fakeIdGenerator = () => '123';
@@ -16,8 +19,11 @@ describe('SongRepositoryPostgres', () => {
   });
 
   beforeEach(async () => {
+    await UsersTableTestHelper.cleanTable();
     await SongsTableTestHelper.cleanTable();
     await AlbumsTableTestHelper.cleanTable();
+    await PlaylistsTableTestHelper.cleanTable();
+    await PlaylistSongsTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
@@ -195,6 +201,38 @@ describe('SongRepositoryPostgres', () => {
       // Assert
       const songs = await SongsTableTestHelper.findSongsById('song-123');
       expect(songs).toHaveLength(0);
+    });
+  });
+
+  describe('getSongsInPlaylist', () => {
+    it('should return array of songs in playlist', async () => {
+      // Arrange
+      await SongsTableTestHelper.addSong({ id: 'song-123', title: 'Test Song A' });
+      await SongsTableTestHelper.addSong({ id: 'song-124', title: 'Test Song B' });
+      await SongsTableTestHelper.addSong({ id: 'song-125', title: 'Test Song C' });
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await PlaylistsTableTestHelper.addPlaylist({ id: 'playlist-123', owner: 'user-123' });
+      await PlaylistSongsTableTestHelper.addPlaylistSongs({
+        id: 'playlist-song-123',
+        playlistId: 'playlist-123',
+        songId: 'song-123',
+      });
+      await PlaylistSongsTableTestHelper.addPlaylistSongs({
+        id: 'playlist-song-124',
+        playlistId: 'playlist-123',
+        songId: 'song-124',
+      });
+
+      // Action
+      const songs = await songRepositoryPostgres.getSongsInPlaylist('playlist-123');
+
+      // Assert
+      expect(songs).toHaveLength(2);
+      const [songA, songB] = songs;
+      expect(songA.id).toEqual('song-123');
+      expect(songA.title).toEqual('Test Song A');
+      expect(songB.id).toEqual('song-124');
+      expect(songB.title).toEqual('Test Song B');
     });
   });
 });
