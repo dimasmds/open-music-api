@@ -156,4 +156,34 @@ describe('when /playlists', () => {
       expect(song2.id).toEqual('song-456');
     });
   });
+
+  describe('when DELETE /playlists/{id}/songs', () => {
+    it('should response 200 and correct message', async () => {
+      // Arrange
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      const { data: { playlistId } } = await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      await SongsTableTestHelper.addSong({ id: 'song-123' });
+      await SongsTableTestHelper.addSong({ id: 'song-456' });
+      await PlaylistSongsTableTestHelper.addPlaylistSongs({ id: 'psongs-123', playlistId, songId: 'song-123' });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/playlists/${playlistId}/songs`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        payload: {
+          songId: 'song-123',
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.message).toEqual('Song removed from playlist');
+    });
+  });
 });

@@ -30,6 +30,8 @@ import GetDetailPlaylistUseCase
 import GetPlaylistsUseCase from '../../Applications/use_cases/playlists/GetPlaylistsUseCase';
 import PlaylistCreationUseCase
   from '../../Applications/use_cases/playlists/PlaylistCreationUseCase';
+import DeleteSongInPlaylistUseCase
+  from '../../Applications/use_cases/playlists/DeleteSongInPlaylistUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -189,6 +191,10 @@ container.register([
   },
   {
     Class: DeletePlaylistUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: DeleteSongInPlaylistUseCase,
     parameter: useCaseParameter,
   },
   {
