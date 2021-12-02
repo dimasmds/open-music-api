@@ -19,6 +19,23 @@ const ServerTestHelper = {
     return JSON.parse(response.payload);
   },
 
+  async createPlaylist({ name = 'Playlist Test', accessToken } : { name: string, accessToken: string }) {
+    const server = await createServer(container);
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/playlists',
+      payload: {
+        name,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return JSON.parse(response.payload);
+  },
+
   async userCreation({ username = 'dimasmds', password = 'secret', fullname = 'Dimas Maulana' } = {}) {
     const server = await createServer(container);
 

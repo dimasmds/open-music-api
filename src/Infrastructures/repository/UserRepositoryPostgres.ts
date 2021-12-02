@@ -13,6 +13,17 @@ class UserRepositoryPostgres implements UserRepository {
     this.idGenerator = idGenerator;
   }
 
+  async isUserIdValid(userId: string): Promise<boolean> {
+    const query = {
+      text: 'SELECT * FROM users WHERE id = $1',
+      values: [userId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return result.rowCount > 0;
+  }
+
   async getPasswordByUsername(username: string): Promise<string | null> {
     const query = {
       text: 'SELECT password FROM users WHERE username = $1',
