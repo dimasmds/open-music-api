@@ -42,4 +42,32 @@ describe('when /playlists', () => {
       expect(responseJson.data.playlistId).toBeDefined();
     });
   });
+
+  describe('when GET /playlists', () => {
+    it('should response 200 and all playlists user owned', async () => {
+      // Arrange
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      await ServerTestHelper.createPlaylist({ name: 'My Playlist 2', accessToken });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/playlists',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.playlists.length).toBe(2);
+      const [playlist1, playlist2] = responseJson.data.playlists;
+      expect(playlist1.name).toEqual('My Playlist');
+      expect(playlist2.name).toEqual('My Playlist 2');
+    });
+  });
 });
