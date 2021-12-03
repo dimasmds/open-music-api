@@ -75,9 +75,6 @@ describe('when /playlists', () => {
       expect(response.statusCode).toBe(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.playlists.length).toBe(2);
-      const [playlist1, playlist2] = responseJson.data.playlists;
-      expect(playlist1.name).toEqual('My Playlist');
-      expect(playlist2.name).toEqual('My Playlist 2');
     });
   });
 
