@@ -8,6 +8,8 @@ import container from '../../container/container';
 import PlaylistSongsTableTestHelper
   from '../../repository/_test/_helper/PlaylistSongsTableTestHelper';
 import pool from '../../database/postgres/pool';
+import PlaylistActivitiesTableTestHelper
+  from '../../repository/_test/_helper/PlaylistActivitiesTableTestHelper';
 
 describe('when /playlists', () => {
   jest.setTimeout(20000);
@@ -17,6 +19,7 @@ describe('when /playlists', () => {
     await UsersTableTestHelper.cleanTable();
     await PlaylistsTableTestHelper.cleanTable();
     await PlaylistsTableTestHelper.cleanTable();
+    await PlaylistActivitiesTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
@@ -189,6 +192,43 @@ describe('when /playlists', () => {
       expect(response.statusCode).toBe(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.message).toEqual('Song removed from playlist');
+    });
+  });
+
+  describe('when GET /playlists/{id}/activities', () => {
+    it('should response 200 and all activities in playlist', async () => {
+      // Arrange
+      await SongsTableTestHelper.addSong({ id: 'song-123', title: 'Song A' });
+      await SongsTableTestHelper.addSong({ id: 'song-456', title: 'Song B' });
+      const { data: { accessToken } } = await ServerTestHelper.createUserAndLogin({ username: 'dimasmds' });
+      const { data: { playlistId } } = await ServerTestHelper.createPlaylist({ name: 'My Playlist', accessToken });
+      await ServerTestHelper.addSongToPlaylist({ playlistId, songId: 'song-123', accessToken });
+      await ServerTestHelper.addSongToPlaylist({ playlistId, songId: 'song-456', accessToken });
+      await ServerTestHelper.removeSongFromPlaylist({ playlistId, songId: 'song-123', accessToken });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/playlists/${playlistId}/activities`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Action
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toBe(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.playlistId).toBe(playlistId);
+      expect(responseJson.data.activities.length).toBe(3);
+      const [activity1, activity2, activity3] = responseJson.data.activities;
+      expect(activity1.action).toBe('add');
+      expect(activity1.title).toBe('Song A');
+      expect(activity2.action).toBe('add');
+      expect(activity2.title).toBe('Song B');
+      expect(activity3.action).toBe('delete');
+      expect(activity3.title).toBe('Song A');
     });
   });
 });

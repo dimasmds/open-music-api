@@ -1,17 +1,21 @@
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
+import ActivitiesRepository from '../../../Domains/activities/repository/ActivitiesRepository';
 
 class DeleteSongInPlaylistUseCase {
   private playlistRepository: PlaylistRepository;
 
-  constructor({ playlistRepository } : UseCaseDependencies) {
+  private activitiesRepository: ActivitiesRepository;
+
+  constructor({ playlistRepository, activitiesRepository } : UseCaseDependencies) {
     this.playlistRepository = playlistRepository;
+    this.activitiesRepository = activitiesRepository;
   }
 
   async execute(payload: any = {}) {
     DeleteSongInPlaylistUseCase.verifyPayload(payload);
 
-    const { playlistId, userId } = payload;
+    const { playlistId, userId, songId } = payload;
 
     const isPlaylistValid = await this.playlistRepository.isPlaylistIdValid(playlistId);
 
@@ -25,10 +29,18 @@ class DeleteSongInPlaylistUseCase {
       throw new Error('DELETE_SONG_IN_PLAYLIST.USER_NOT_OWNED_PLAYLIST');
     }
 
-    await this.playlistRepository.deletePlaylist(playlistId);
+    await this.playlistRepository.deleteSongInPlaylist(playlistId, songId);
+
+    await this.activitiesRepository.persist({
+      userId,
+      playlistId,
+      songId,
+      action: 'delete',
+      time: new Date().toISOString(),
+    });
   }
 
-  private static verifyPayload({ playlistId, userId }: any) {
+  private static verifyPayload({ playlistId, userId, songId }: any) {
     if (!playlistId) {
       throw new Error('DELETE_SONG_IN_PLAYLIST.NOT_CONTAIN_PLAYLIST_ID');
     }
@@ -43,6 +55,14 @@ class DeleteSongInPlaylistUseCase {
 
     if (typeof userId !== 'string') {
       throw new Error('DELETE_SONG_IN_PLAYLIST.USER_ID_NOT_STRING');
+    }
+
+    if (!songId) {
+      throw new Error('DELETE_SONG_IN_PLAYLIST.NOT_CONTAIN_SONG_ID');
+    }
+
+    if (typeof songId !== 'string') {
+      throw new Error('DELETE_SONG_IN_PLAYLIST.SONG_ID_NOT_STRING');
     }
   }
 }

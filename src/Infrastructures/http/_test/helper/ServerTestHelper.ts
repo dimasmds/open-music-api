@@ -36,6 +36,40 @@ const ServerTestHelper = {
     return JSON.parse(response.payload);
   },
 
+  async addSongToPlaylist({ playlistId = 'playlist-123', songId = 'song-123', accessToken }: any = {}) {
+    const server = await createServer(container);
+
+    const response = await server.inject({
+      method: 'POST',
+      url: `/playlists/${playlistId}/songs`,
+      payload: {
+        songId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return JSON.parse(response.payload);
+  },
+
+  async removeSongFromPlaylist({ playlistId = 'playlist-123', songId = 'song-123', accessToken } : any = {}) {
+    const server = await createServer(container);
+
+    const response = await server.inject({
+      method: 'DELETE',
+      url: `/playlists/${playlistId}/songs`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      payload: {
+        songId,
+      },
+    });
+
+    return JSON.parse(response.payload);
+  },
+
   async login({ username = 'dimasmds', password = 'secret' } = {}) {
     const server = await createServer(container);
 

@@ -91,6 +91,8 @@ class DomainToHttpErrorTranslator {
     'DELETE_SONG_IN_PLAYLIST.PLAYLIST_ID_NOT_STRING': new InvariantError('delete song in playlist id should be string'),
     'DELETE_SONG_IN_PLAYLIST.NOT_CONTAIN_USER_ID': new InvariantError('delete song in playlist should contain user id'),
     'DELETE_SONG_IN_PLAYLIST.USER_ID_NOT_STRING': new InvariantError('delete song in playlist user id should be string'),
+    'DELETE_SONG_IN_PLAYLIST.NOT_CONTAIN_SONG_ID': new InvariantError('delete song in playlist should contain song id'),
+    'DELETE_SONG_IN_PLAYLIST.SONG_ID_NOT_STRING': new InvariantError('delete song in playlist song id should be string'),
     'GET_DETAIL_PLAYLIST.PLAYLIST_NOT_FOUND': new NotFoundError('no playlist found'),
     'GET_DETAIL_PLAYLIST.USER_NOT_OWNED_PLAYLIST': new AuthorizationError('you are not owner of this playlist'),
     'GET_DETAIL_PLAYLIST.NOT_CONTAIN_PLAYLIST_ID': new InvariantError('get detail playlist should contain playlist id'),
