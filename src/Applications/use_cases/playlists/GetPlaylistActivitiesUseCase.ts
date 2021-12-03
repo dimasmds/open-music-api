@@ -5,15 +5,23 @@ import ActivitiesRepository from '../../../Domains/activities/repository/Activit
 import NotFoundError from '../../../Commons/exceptions/NotFoundError';
 import InvariantError from '../../../Commons/exceptions/InvariantError';
 import AuthorizationError from '../../../Commons/exceptions/AuthorizationError';
+import CollaborationRepository
+  from '../../../Domains/collaborations/repositories/CollaborationRepository';
 
 class GetPlaylistActivitiesUseCase {
   private playlistRepository: PlaylistRepository;
 
   private activitiesRepository: ActivitiesRepository;
 
-  constructor({ playlistRepository, activitiesRepository }: UseCaseDependencies) {
+  private collaborationRepository: CollaborationRepository;
+
+  constructor({
+    playlistRepository,
+    activitiesRepository, collaborationRepository,
+  }: UseCaseDependencies) {
     this.playlistRepository = playlistRepository;
     this.activitiesRepository = activitiesRepository;
+    this.collaborationRepository = collaborationRepository;
   }
 
   async execute({ playlistId, userId } : { playlistId: string, userId: string }) {
@@ -31,10 +39,13 @@ class GetPlaylistActivitiesUseCase {
       throw new NotFoundError('Playlist not found');
     }
 
-    const isUserOwnedPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
+    const isCanAccess = await Promise.all([
+      this.collaborationRepository.isCollaboratorPlaylist(playlistId, userId),
+      this.playlistRepository.isAnOwnerPlaylist(playlistId, userId),
+    ]);
 
-    if (!isUserOwnedPlaylist) {
-      throw new AuthorizationError('User is not an owner of this playlist');
+    if (!isCanAccess.some(Boolean)) {
+      throw new AuthorizationError('You are not authorized to access this playlist');
     }
 
     return this.activitiesRepository.getActivitiesInPlaylist(playlistId);
