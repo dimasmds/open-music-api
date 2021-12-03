@@ -9,6 +9,9 @@ import PlaylistSongCreation from '../../../Domains/playlists/entities/PlaylistSo
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
 import SongRepository from '../../../Domains/songs/repository/SongRepository';
 import PlaylistSongsTableTestHelper from './_helper/PlaylistSongsTableTestHelper';
+import CollaborationsTableTestHelper from './_helper/CollaborationsTableTestHelper';
+import CollaborationRepository
+  from '../../../Domains/collaborations/repositories/CollaborationRepository';
 
 describe('PlaylistRepositoryPostgres', () => {
   const fakeIdGenerator = () => '123';
@@ -50,7 +53,7 @@ describe('PlaylistRepositoryPostgres', () => {
   });
 
   describe('getPlaylists', () => {
-    it('should return all playlist by user id', async () => {
+    it('should return all playlist by user id with collaboration also', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dimasmds' });
       await PlaylistsTableTestHelper.addPlaylist({
@@ -75,6 +78,39 @@ describe('PlaylistRepositoryPostgres', () => {
       expect(playlists[1].id).toBe('playlist-456');
       expect(playlists[1].name).toBe('Playlist name 2');
       expect(playlists[1].username).toBe('dimasmds');
+    });
+
+    it('should return owned playlist and collaborate playlist', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dimasmds' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dimasmds2' });
+      await PlaylistsTableTestHelper.addPlaylist({
+        id: 'playlist-123',
+        name: 'Playlist name',
+        owner: 'user-123',
+      });
+      await PlaylistsTableTestHelper.addPlaylist({
+        id: 'playlist-456',
+        name: 'Playlist name 2',
+        owner: 'user-456',
+      });
+      await CollaborationsTableTestHelper.addCollaboration({
+        id: 'collaboration-123',
+        playlistId: 'playlist-123',
+        userId: 'user-456',
+      });
+
+      // Action
+      const playlists = await playlistRepositoryPostgres.getPlaylists('user-456');
+
+      // Arrange
+      expect(playlists.length).toBe(2);
+      expect(playlists[0].id).toBe('playlist-123');
+      expect(playlists[0].name).toBe('Playlist name');
+      expect(playlists[0].username).toBe('dimasmds');
+      expect(playlists[1].id).toBe('playlist-456');
+      expect(playlists[1].name).toBe('Playlist name 2');
+      expect(playlists[1].username).toBe('dimasmds2');
     });
   });
 
@@ -181,7 +217,7 @@ describe('PlaylistRepositoryPostgres', () => {
       await PlaylistsTableTestHelper.addPlaylist({ id: 'playlist-123', owner: 'user-123' });
       await SongsTableTestHelper.addSong({ id: 'song-123' });
       const playlistSongsCreation = new PlaylistSongCreation(
-        <PlaylistRepository>{}, <SongRepository>{},
+        <PlaylistRepository>{}, <SongRepository>{}, <CollaborationRepository>{},
       );
       playlistSongsCreation.playlistId = 'playlist-123';
       playlistSongsCreation.songId = 'song-123';
