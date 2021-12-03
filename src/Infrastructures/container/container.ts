@@ -40,6 +40,7 @@ import CollaborationDeletionUseCase
 import ActivitiesRepositoryPostgres from '../repository/ActivitiesRepositoryPostgres';
 import GetPlaylistActivitiesUseCase
   from '../../Applications/use_cases/playlists/GetPlaylistActivitiesUseCase';
+import Base64PasswordHash from '../security/Base64PasswordHash';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -143,7 +144,7 @@ container.register([
 container.register([
   {
     key: 'PasswordHash',
-    Class: BcryptPasswordHash,
+    Class: process.env.NODE_ENV === 'test' ? Base64PasswordHash : BcryptPasswordHash,
   },
   {
     key: 'AuthTokenCreator',
