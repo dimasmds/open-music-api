@@ -39,6 +39,17 @@ class CollaborationRepositoryPostgres implements CollaborationRepository {
 
     return rows[0].id;
   }
+
+  async isCollaboratorPlaylist(playlistId: string, userId: string) {
+    const query = {
+      text: 'SELECT * FROM collaborations WHERE playlist_id = $1 AND user_id = $2',
+      values: [playlistId, userId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return result.rows.length > 0;
+  }
 }
 
 export default CollaborationRepositoryPostgres;

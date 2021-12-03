@@ -1,15 +1,25 @@
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
 import SongRepository from '../../../Domains/songs/repository/SongRepository';
+import CollaborationRepository
+  from '../../../Domains/collaborations/repositories/CollaborationRepository';
+import AuthorizationError from '../../../Commons/exceptions/AuthorizationError';
 
 class GetDetailPlaylistUseCase {
   private playlistRepository: PlaylistRepository;
 
   private songRepository: SongRepository;
 
-  constructor({ playlistRepository, songRepository } : UseCaseDependencies) {
+  private collaborationRepository: CollaborationRepository;
+
+  constructor({
+    playlistRepository,
+    songRepository,
+    collaborationRepository,
+  } : UseCaseDependencies) {
     this.playlistRepository = playlistRepository;
     this.songRepository = songRepository;
+    this.collaborationRepository = collaborationRepository;
   }
 
   async execute(useCasePayload: any = {}) {
@@ -23,10 +33,13 @@ class GetDetailPlaylistUseCase {
       throw new Error('GET_DETAIL_PLAYLIST.PLAYLIST_NOT_FOUND');
     }
 
-    const isAnOwnerPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
+    const isCanAccess = await Promise.all([
+      this.playlistRepository.isAnOwnerPlaylist(playlistId, userId),
+      this.collaborationRepository.isCollaboratorPlaylist(playlistId, userId),
+    ]);
 
-    if (!isAnOwnerPlaylist) {
-      throw new Error('GET_DETAIL_PLAYLIST.USER_NOT_OWNED_PLAYLIST');
+    if (!isCanAccess.includes(true)) {
+      throw new AuthorizationError('you are not authorized to access this playlist');
     }
 
     const playlist = await this.playlistRepository.getPlaylist(playlistId);

@@ -63,4 +63,34 @@ describe('CollaborationRepositoryPostgres', () => {
       expect(collaborations.length).toBe(0);
     });
   });
+
+  describe('isCollaboratorPlaylist', () => {
+    it('should return false if user not collaborator', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dimasmds' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dicoding' });
+      await PlaylistsTableTestHelper.addPlaylist({ owner: 'user-123' });
+      await collaborationRepositoryPostgres.persist({ playlistId: 'playlist-123', userId: 'user-456' } as CollaborationCreation);
+
+      // Action
+      const isCollaborator = await collaborationRepositoryPostgres.isCollaboratorPlaylist('playlist-123', 'user-123');
+
+      // Assert
+      expect(isCollaborator).toBe(false);
+    });
+
+    it('should return true if user collaborator', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dimasmds' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dicoding' });
+      await PlaylistsTableTestHelper.addPlaylist({ owner: 'user-123' });
+      await collaborationRepositoryPostgres.persist({ playlistId: 'playlist-123', userId: 'user-456' } as CollaborationCreation);
+
+      // Action
+      const isCollaborator = await collaborationRepositoryPostgres.isCollaboratorPlaylist('playlist-123', 'user-456');
+
+      // Assert
+      expect(isCollaborator).toBe(true);
+    });
+  });
 });

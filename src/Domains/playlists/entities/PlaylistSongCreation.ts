@@ -1,18 +1,27 @@
 import PlaylistRepository from '../repository/PlaylistRepository';
 import SongRepository from '../../songs/repository/SongRepository';
+import CollaborationRepository from '../../collaborations/repositories/CollaborationRepository';
+import AuthorizationError from '../../../Commons/exceptions/AuthorizationError';
 
 class PlaylistSongCreation {
   private playlistRepository: PlaylistRepository;
 
   private songRepository: SongRepository;
 
+  private collaborationRepository: CollaborationRepository;
+
   public playlistId: string;
 
   public songId: string;
 
-  constructor(playlistRepository: PlaylistRepository, songRepository: SongRepository) {
+  constructor(
+    playlistRepository: PlaylistRepository,
+    songRepository: SongRepository,
+    collaborationRepository: CollaborationRepository,
+  ) {
     this.playlistRepository = playlistRepository;
     this.songRepository = songRepository;
+    this.collaborationRepository = collaborationRepository;
   }
 
   async create(payload: any = {}) {
@@ -32,10 +41,13 @@ class PlaylistSongCreation {
       throw new Error('PLAYLIST_SONG_CREATION.SONG_NOT_VALID');
     }
 
-    const isAnOwnerPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
+    const isCanAccess = await Promise.all([
+      this.playlistRepository.isAnOwnerPlaylist(playlistId, userId),
+      this.collaborationRepository.isCollaboratorPlaylist(playlistId, userId),
+    ]);
 
-    if (!isAnOwnerPlaylist) {
-      throw new Error('PLAYLIST_SONG_CREATION.NOT_AN_OWNER');
+    if (!isCanAccess.includes(true)) {
+      throw new AuthorizationError('Your are not an owner or collaborator of this playlist');
     }
 
     this.playlistId = playlistId;

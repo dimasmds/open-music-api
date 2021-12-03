@@ -59,7 +59,9 @@ class PlaylistRepositoryPostgres implements PlaylistRepository {
       text: `SELECT playlists.id, playlists.name, users.username 
       FROM playlists
       LEFT JOIN users ON playlists.owner = users.id
-      WHERE playlists.owner = $1`,
+      LEFT JOIN collaborations ON playlists.id = collaborations.playlist_id
+      WHERE collaborations.user_id = $1 OR playlists.owner = $1
+      GROUP BY playlists.id, users.username`,
       values: [userId],
     };
 
