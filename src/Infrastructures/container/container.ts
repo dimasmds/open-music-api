@@ -38,6 +38,8 @@ import CollaborationCreationUseCase
 import CollaborationDeletionUseCase
   from '../../Applications/use_cases/collaborations/CollaborationDeletionUseCase';
 import ActivitiesRepositoryPostgres from '../repository/ActivitiesRepositoryPostgres';
+import GetPlaylistActivitiesUseCase
+  from '../../Applications/use_cases/playlists/GetPlaylistActivitiesUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -239,6 +241,10 @@ container.register([
   },
   {
     Class: CollaborationDeletionUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetPlaylistActivitiesUseCase,
     parameter: useCaseParameter,
   },
 ]);
