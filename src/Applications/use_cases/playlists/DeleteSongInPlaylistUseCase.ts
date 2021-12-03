@@ -1,15 +1,24 @@
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
 import ActivitiesRepository from '../../../Domains/activities/repository/ActivitiesRepository';
+import CollaborationRepository
+  from '../../../Domains/collaborations/repositories/CollaborationRepository';
+import AuthorizationError from '../../../Commons/exceptions/AuthorizationError';
 
 class DeleteSongInPlaylistUseCase {
   private playlistRepository: PlaylistRepository;
 
   private activitiesRepository: ActivitiesRepository;
 
-  constructor({ playlistRepository, activitiesRepository } : UseCaseDependencies) {
+  private collaborationRepository: CollaborationRepository;
+
+  constructor({
+    playlistRepository,
+    activitiesRepository, collaborationRepository,
+  } : UseCaseDependencies) {
     this.playlistRepository = playlistRepository;
     this.activitiesRepository = activitiesRepository;
+    this.collaborationRepository = collaborationRepository;
   }
 
   async execute(payload: any = {}) {
@@ -23,10 +32,13 @@ class DeleteSongInPlaylistUseCase {
       throw new Error('DELETE_SONG_IN_PLAYLIST.PLAYLIST_NOT_FOUND');
     }
 
-    const isAnOwnerPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
+    const isCanAccess = await Promise.all([
+      this.playlistRepository.isAnOwnerPlaylist(playlistId, userId),
+      this.collaborationRepository.isCollaboratorPlaylist(playlistId, userId),
+    ]);
 
-    if (!isAnOwnerPlaylist) {
-      throw new Error('DELETE_SONG_IN_PLAYLIST.USER_NOT_OWNED_PLAYLIST');
+    if (!isCanAccess.includes(true)) {
+      throw new AuthorizationError('you are not authorized to access this playlist');
     }
 
     await this.playlistRepository.deleteSongInPlaylist(playlistId, songId);
