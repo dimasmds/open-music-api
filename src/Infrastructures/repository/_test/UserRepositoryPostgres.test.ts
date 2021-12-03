@@ -9,7 +9,7 @@ describe('UserRepositoryPostgres', () => {
   const idGenerator = () => '123';
   const userRepositoryPostgres = new UserRepositoryPostgres({ pool, idGenerator });
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await UsersTableTestHelper.cleanTable();
   });
 
