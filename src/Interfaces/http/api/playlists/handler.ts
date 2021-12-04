@@ -79,9 +79,7 @@ class PlaylistsHandler {
 
     return {
       status: 'success',
-      data: {
-        message: 'Playlist deleted',
-      },
+      message: 'Playlist deleted',
     };
   }
 
@@ -98,9 +96,7 @@ class PlaylistsHandler {
 
     const response = h.response({
       status: 'success',
-      data: {
-        message: 'Song added to playlist',
-      },
+      message: 'Song added to playlist',
     });
     response.code(201);
     return response;
@@ -137,9 +133,7 @@ class PlaylistsHandler {
 
     return {
       status: 'success',
-      data: {
-        message: 'Song removed from playlist',
-      },
+      message: 'Song removed from playlist',
     };
   }
 
