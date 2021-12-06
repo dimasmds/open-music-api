@@ -7,6 +7,7 @@ import SongRepository from '../../../Domains/songs/repository/SongRepository';
 import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRepository';
 import CollaborationRepository from '../../../Domains/collaborations/repositories/CollaborationRepository';
 import ActivitiesRepository from '../../../Domains/activities/repository/ActivitiesRepository';
+import PlaylistExportService from '../../../Domains/playlists/service/PlaylistExportService';
 
 interface UseCaseDependencies {
   userRepository?: UserRepository
@@ -17,7 +18,8 @@ interface UseCaseDependencies {
   authTokenCreator?: AuthTokenCreator,
   playlistRepository?: PlaylistRepository,
   collaborationRepository?: CollaborationRepository,
-  activitiesRepository?: ActivitiesRepository
+  activitiesRepository?: ActivitiesRepository,
+  playlistExportService?: PlaylistExportService,
 }
 
 export default UseCaseDependencies;
