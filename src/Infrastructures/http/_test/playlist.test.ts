@@ -98,7 +98,7 @@ describe('when /playlists', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toBe(200);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.message).toEqual('Playlist deleted');
+      expect(responseJson.message).toEqual('Playlist deleted');
     });
   });
   describe('when POST /playlists/{id}/songs', () => {
@@ -126,7 +126,7 @@ describe('when /playlists', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toBe(201);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.message).toEqual('Song added to playlist');
+      expect(responseJson.message).toEqual('Song added to playlist');
     });
   });
 
@@ -188,7 +188,7 @@ describe('when /playlists', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toBe(200);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.data.message).toEqual('Song removed from playlist');
+      expect(responseJson.message).toEqual('Song removed from playlist');
     });
   });
 
