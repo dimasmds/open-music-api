@@ -35,7 +35,8 @@ class ActivitiesRepositoryPostgres implements ActivitiesRepository {
       FROM playlist_song_activities
       JOIN songs ON playlist_song_activities.song_id = songs.id
       JOIN users ON playlist_song_activities.user_id = users.id
-      WHERE playlist_song_activities.playlist_id = $1`,
+      WHERE playlist_song_activities.playlist_id = $1
+      ORDER BY playlist_song_activities.time`,
       values: [playlistId],
     };
 
