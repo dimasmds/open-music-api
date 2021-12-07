@@ -46,6 +46,7 @@ import ExportPlaylistUseCase from '../../Applications/use_cases/playlists/Export
 import S3StorageService from '../storage/S3StorageService';
 import AddCoverAlbumUseCase from '../../Applications/use_cases/albums/AddCoverAlbumUseCase';
 import LikeAlbumUseCase from '../../Applications/use_cases/albums/LikeAlbumUseCase';
+import GetLikeCountAlbumUseCase from '../../Applications/use_cases/albums/GetLikeCountAlbumUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -283,6 +284,10 @@ container.register([
   },
   {
     Class: LikeAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetLikeCountAlbumUseCase,
     parameter: useCaseParameter,
   },
 ]);

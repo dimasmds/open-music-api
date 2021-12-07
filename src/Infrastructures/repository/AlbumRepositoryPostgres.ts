@@ -112,6 +112,17 @@ class AlbumRepositoryPostgres implements AlbumRepository {
 
     await this.pool.query(query);
   }
+
+  async getLikeCount(albumId: string): Promise<number> {
+    const query = {
+      text: 'SELECT COUNT(*) FROM album_likes WHERE album_id = $1',
+      values: [albumId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return Number(result.rows[0].count);
+  }
 }
 
 export default AlbumRepositoryPostgres;

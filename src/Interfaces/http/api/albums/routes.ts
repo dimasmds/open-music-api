@@ -42,6 +42,11 @@ const routes = (handler: AlbumsHandler): ServerRoute[] => [
       auth: 'openmusic_jwt',
     },
   },
+  {
+    method: 'GET',
+    path: '/albums/{albumId}/likes',
+    handler: handler.getAlbumLikesHandler,
+  },
 ];
 
 export default routes;

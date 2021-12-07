@@ -14,6 +14,7 @@ interface AlbumRepository {
   likeAlbum(userId: string, albumId: string) : Promise<void>
   unlikeAlbum(userId: string, albumId: string) : Promise<void>
   isAlbumLikedByUser(albumId: string, userId: string) : Promise<boolean>
+  getLikeCount(albumId: string): Promise<number>
 }
 
 export default AlbumRepository;

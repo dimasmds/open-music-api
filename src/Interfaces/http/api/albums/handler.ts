@@ -6,6 +6,8 @@ import UpdateAlbumUseCase from '../../../../Applications/use_cases/albums/Update
 import DeleteAlbumUseCase from '../../../../Applications/use_cases/albums/DeleteAlbumUseCase';
 import AddCoverAlbumUseCase from '../../../../Applications/use_cases/albums/AddCoverAlbumUseCase';
 import LikeAlbumUseCase from '../../../../Applications/use_cases/albums/LikeAlbumUseCase';
+import GetLikeCountAlbumUseCase
+  from '../../../../Applications/use_cases/albums/GetLikeCountAlbumUseCase';
 
 class AlbumsHandler {
   private container: Container;
@@ -19,6 +21,7 @@ class AlbumsHandler {
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
     this.postAlbumCoverHandler = this.postAlbumCoverHandler.bind(this);
     this.postAlbumLikeHandler = this.postAlbumLikeHandler.bind(this);
+    this.getAlbumLikesHandler = this.getAlbumLikesHandler.bind(this);
   }
 
   async postAlbumHandler(request: Request, h: ResponseToolkit) {
@@ -111,6 +114,22 @@ class AlbumsHandler {
     });
     response.code(201);
     return response;
+  }
+
+  async getAlbumLikesHandler(request: Request) {
+    const { albumId } = request.params;
+
+    const useCase = this.container
+      .getInstance(GetLikeCountAlbumUseCase.name) as GetLikeCountAlbumUseCase;
+
+    const likes = await useCase.execute({ albumId });
+
+    return {
+      status: 'success',
+      data: {
+        likes,
+      },
+    };
   }
 }
 
