@@ -3,6 +3,7 @@ import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRe
 import InvariantError from '../../../Commons/exceptions/InvariantError';
 import NotFoundError from '../../../Commons/exceptions/NotFoundError';
 import PlaylistExportService from '../../../Domains/playlists/service/PlaylistExportService';
+import AuthorizationError from '../../../Commons/exceptions/AuthorizationError';
 
 class ExportPlaylistUseCase {
   private playlistRepository: PlaylistRepository;
@@ -24,10 +25,10 @@ class ExportPlaylistUseCase {
       throw new NotFoundError(`Playlist with id ${playlistId} does not exist`);
     }
 
-    const isUserOwnedPlaylist = await this.playlistRepository.isAnOwnerPlaylist(userId, playlistId);
+    const isUserOwnedPlaylist = await this.playlistRepository.isAnOwnerPlaylist(playlistId, userId);
 
     if (!isUserOwnedPlaylist) {
-      throw new InvariantError(`User with id ${userId} is not the owner of playlist with id ${playlistId}`);
+      throw new AuthorizationError(`User with id ${userId} is not the owner of playlist with id ${playlistId}`);
     }
 
     await this.playlistExportService.export(playlistId, targetEmail);
