@@ -11,6 +11,9 @@ interface AlbumRepository {
   updateAlbum(albumUpdate: AlbumUpdate): Promise<void>
   deleteAlbum(albumId: string) : Promise<void>
   updateCoverUrl(albumId: string, coverUrl: string) : Promise<void>
+  likeAlbum(userId: string, albumId: string) : Promise<void>
+  unlikeAlbum(userId: string, albumId: string) : Promise<void>
+  isAlbumLikedByUser(albumId: string, userId: string) : Promise<boolean>
 }
 
 export default AlbumRepository;
