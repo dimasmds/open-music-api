@@ -72,6 +72,15 @@ class AlbumRepositoryPostgres implements AlbumRepository {
 
     await this.pool.query(query);
   }
+
+  async updateCoverUrl(albumId: string, coverUrl: string): Promise<void> {
+    const query = {
+      text: 'UPDATE albums SET cover_url = $2 WHERE id = $1',
+      values: [albumId, coverUrl],
+    };
+
+    await this.pool.query(query);
+  }
 }
 
 export default AlbumRepositoryPostgres;
