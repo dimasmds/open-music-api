@@ -8,6 +8,7 @@ import PlaylistRepository from '../../../Domains/playlists/repository/PlaylistRe
 import CollaborationRepository from '../../../Domains/collaborations/repositories/CollaborationRepository';
 import ActivitiesRepository from '../../../Domains/activities/repository/ActivitiesRepository';
 import PlaylistExportService from '../../../Domains/playlists/service/PlaylistExportService';
+import StorageService from '../../storage/StorageService';
 
 interface UseCaseDependencies {
   userRepository?: UserRepository
@@ -20,6 +21,7 @@ interface UseCaseDependencies {
   collaborationRepository?: CollaborationRepository,
   activitiesRepository?: ActivitiesRepository,
   playlistExportService?: PlaylistExportService,
+  storageService?: StorageService
 }
 
 export default UseCaseDependencies;
