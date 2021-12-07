@@ -5,6 +5,13 @@ import StorageService from '../../storage/StorageService';
 import AlbumRepository from '../../../Domains/albums/repository/AlbumRepository';
 
 class AddCoverAlbumUseCase {
+  private static allowedMimeTypes: string[] = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+  ];
+
   private storageService: StorageService;
 
   private albumRepository: AlbumRepository;
@@ -61,6 +68,10 @@ class AddCoverAlbumUseCase {
 
     if (typeof contentType !== 'string') {
       throw new InvariantError('Content type must be a string');
+    }
+
+    if (!AddCoverAlbumUseCase.allowedMimeTypes.includes(contentType)) {
+      throw new InvariantError('Content type is not allowed');
     }
   }
 }
