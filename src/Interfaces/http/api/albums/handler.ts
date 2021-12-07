@@ -4,6 +4,7 @@ import AlbumCreationUseCase from '../../../../Applications/use_cases/albums/Albu
 import GetAlbumDetailUseCase from '../../../../Applications/use_cases/albums/GetAlbumDetailUseCase';
 import UpdateAlbumUseCase from '../../../../Applications/use_cases/albums/UpdateAlbumUseCase';
 import DeleteAlbumUseCase from '../../../../Applications/use_cases/albums/DeleteAlbumUseCase';
+import AddCoverAlbumUseCase from '../../../../Applications/use_cases/albums/AddCoverAlbumUseCase';
 
 class AlbumsHandler {
   private container: Container;
@@ -15,6 +16,7 @@ class AlbumsHandler {
     this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
     this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    this.postAlbumCoverHandler = this.postAlbumCoverHandler.bind(this);
   }
 
   async postAlbumHandler(request: Request, h: ResponseToolkit) {
@@ -75,6 +77,22 @@ class AlbumsHandler {
       status: 'success',
       message: 'album delete success',
     };
+  }
+
+  async postAlbumCoverHandler(request: Request, h: ResponseToolkit) {
+    const useCase = this.container.getInstance(AddCoverAlbumUseCase.name) as AddCoverAlbumUseCase;
+    const { albumId } = request.params;
+    const { cover } = request.payload as any;
+    const { hapi: { headers } } = cover;
+
+    await useCase.execute({ cover, albumId, contentType: headers['content-type'] });
+
+    const response = h.response({
+      status: 'success',
+      message: 'album cover upload success',
+    });
+    response.code(201);
+    return response;
   }
 }
 

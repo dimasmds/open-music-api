@@ -10,6 +10,7 @@ interface AlbumRepository {
   getAlbumById(albumId: string) : Promise<AlbumDetail>
   updateAlbum(albumUpdate: AlbumUpdate): Promise<void>
   deleteAlbum(albumId: string) : Promise<void>
+  updateCoverUrl(albumId: string, coverUrl: string) : Promise<void>
 }
 
 export default AlbumRepository;

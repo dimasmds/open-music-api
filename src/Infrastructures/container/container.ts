@@ -43,6 +43,8 @@ import GetPlaylistActivitiesUseCase
 import Base64PasswordHash from '../security/Base64PasswordHash';
 import PlaylistExportServiceRMQ from '../services/PlaylistExportServiceRMQ';
 import ExportPlaylistUseCase from '../../Applications/use_cases/playlists/ExportPlaylistUseCase';
+import S3StorageService from '../storage/S3StorageService';
+import AddCoverAlbumUseCase from '../../Applications/use_cases/albums/AddCoverAlbumUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -87,6 +89,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'playlistExportService',
       internal: 'PlaylistExportService',
+    },
+    {
+      name: 'storageService',
+      internal: 'StorageService',
     },
   ],
 };
@@ -169,6 +175,10 @@ container.register([
   {
     key: 'PlaylistExportService',
     Class: PlaylistExportServiceRMQ,
+  },
+  {
+    key: 'StorageService',
+    Class: S3StorageService,
   },
 ]);
 
@@ -264,6 +274,10 @@ container.register([
   },
   {
     Class: ExportPlaylistUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: AddCoverAlbumUseCase,
     parameter: useCaseParameter,
   },
 ]);
