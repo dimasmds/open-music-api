@@ -1,4 +1,4 @@
-import * as Stream from 'stream';
+import { Readable } from 'stream';
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
 import InvariantError from '../../../Commons/exceptions/InvariantError';
 import StorageService from '../../storage/StorageService';
@@ -43,7 +43,7 @@ class AddCoverAlbumUseCase {
       throw new InvariantError('Cover is required');
     }
 
-    if (!(cover instanceof Stream.Readable)) {
+    if (!(cover instanceof Readable)) {
       throw new InvariantError('Cover must be a readable stream');
     }
 

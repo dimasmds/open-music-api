@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import * as Stream from 'stream';
+import { Readable } from 'stream';
 
-type FileParameter = {
-  file: Stream.Readable,
+export type FileParameter = {
+  file: Readable,
   meta: {
     filename: string,
     contentType: string,

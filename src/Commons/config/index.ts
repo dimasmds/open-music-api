@@ -29,6 +29,9 @@ const config = {
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
     accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
   },
+  s3: {
+    bucketName: process.env.AWS_BUCKET_NAME,
+  },
 };
 
 export default config;
