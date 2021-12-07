@@ -26,7 +26,7 @@ class AlbumRepositoryPostgres implements AlbumRepository {
 
   async getAlbumById(albumId: string): Promise<AlbumDetail> {
     const query = {
-      text: 'SELECT id, name, year FROM albums WHERE id = $1',
+      text: 'SELECT id, name, year, cover_url FROM albums WHERE id = $1',
       values: [albumId],
     };
 
@@ -34,7 +34,7 @@ class AlbumRepositoryPostgres implements AlbumRepository {
 
     const rawAlbum = result.rows[0];
 
-    return new AlbumDetail({ ...rawAlbum, songs: null });
+    return new AlbumDetail({ ...rawAlbum, coverUrl: rawAlbum.cover_url, songs: null });
   }
 
   async isAlbumValid(albumId: string): Promise<boolean> {
