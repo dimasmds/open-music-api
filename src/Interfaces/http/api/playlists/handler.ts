@@ -13,6 +13,8 @@ import DeleteSongInPlaylistUseCase
   from '../../../../Applications/use_cases/playlists/DeleteSongInPlaylistUseCase';
 import GetPlaylistActivitiesUseCase
   from '../../../../Applications/use_cases/playlists/GetPlaylistActivitiesUseCase';
+import ExportPlaylistUseCase
+  from '../../../../Applications/use_cases/playlists/ExportPlaylistUseCase';
 
 class PlaylistsHandler {
   private container: Container;
@@ -28,6 +30,7 @@ class PlaylistsHandler {
     this.getPlaylistSongsHandler = this.getPlaylistSongsHandler.bind(this);
     this.deletePlaylistSongHandler = this.deletePlaylistSongHandler.bind(this);
     this.getPlaylistActivitiesHandler = this.getPlaylistActivitiesHandler.bind(this);
+    this.exportPlaylistByIdHandler = this.exportPlaylistByIdHandler.bind(this);
   }
 
   async postPlaylistHandler(request: Request, h: ResponseToolkit) {
@@ -154,6 +157,25 @@ class PlaylistsHandler {
         activities,
       },
     };
+  }
+
+  async exportPlaylistByIdHandler(request: Request, h: ResponseToolkit) {
+    const { playlistId } = request.params;
+    const { userId } = request.auth.credentials;
+    const { payload } = request;
+
+    const useCase = this.container.getInstance(
+      ExportPlaylistUseCase.name,
+    ) as ExportPlaylistUseCase;
+
+    await useCase.execute({ playlistId, userId, ...payload as object });
+
+    const response = h.response({
+      status: 'success',
+      message: 'Playlist exported',
+    });
+    response.code(201);
+    return response;
   }
 }
 
