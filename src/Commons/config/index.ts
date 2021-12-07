@@ -21,6 +21,9 @@ const config = {
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
   },
+  queue: {
+    host: process.env.QUEUE_HOST,
+  },
   security: {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
