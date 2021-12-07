@@ -41,6 +41,8 @@ import ActivitiesRepositoryPostgres from '../repository/ActivitiesRepositoryPost
 import GetPlaylistActivitiesUseCase
   from '../../Applications/use_cases/playlists/GetPlaylistActivitiesUseCase';
 import Base64PasswordHash from '../security/Base64PasswordHash';
+import PlaylistExportServiceRMQ from '../services/PlaylistExportServiceRMQ';
+import ExportPlaylistUseCase from '../../Applications/use_cases/playlists/ExportPlaylistUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -81,6 +83,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'activitiesRepository',
       internal: 'ActivitiesRepository',
+    },
+    {
+      name: 'playlistExportService',
+      internal: 'PlaylistExportService',
     },
   ],
 };
@@ -157,6 +163,14 @@ container.register({
   key: 'Logger',
   Class: FileLogger,
 });
+
+/** services */
+container.register([
+  {
+    key: 'PlaylistExportService',
+    Class: PlaylistExportServiceRMQ,
+  },
+]);
 
 /** use case */
 container.register([
@@ -246,6 +260,10 @@ container.register([
   },
   {
     Class: GetPlaylistActivitiesUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: ExportPlaylistUseCase,
     parameter: useCaseParameter,
   },
 ]);
