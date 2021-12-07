@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import UserRepositoryPostgres from '../repository/UserRepositoryPostgres';
 import pool from '../database/postgres/pool';
 import AuthenticationRepositoryPostgres from '../repository/AuthenticationRepositoryPostgres';
-import BcryptPasswordHash from '../security/BcryptPasswordHash';
 import JwtAuthTokenCreator from '../security/JwtAuthTokenCreator';
 import UserCreationUseCase from '../../Applications/use_cases/users/UserCreationUseCase';
 import LoginUseCase from '../../Applications/use_cases/authentications/LoginUseCase';
@@ -158,7 +157,7 @@ container.register([
 container.register([
   {
     key: 'PasswordHash',
-    Class: process.env.NODE_ENV === 'test' ? Base64PasswordHash : BcryptPasswordHash,
+    Class: Base64PasswordHash,
   },
   {
     key: 'AuthTokenCreator',
