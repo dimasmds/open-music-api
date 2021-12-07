@@ -4,6 +4,11 @@ import AlbumCreation from '../entities/AlbumCreation';
 import AlbumDetail from '../entities/AlbumDetail';
 import AlbumUpdate from '../entities/AlbumUpdate';
 
+export type LikeCountSource = {
+  count: number,
+  source: 'database' | 'cache',
+}
+
 interface AlbumRepository {
   isAlbumValid(albumId: string) : Promise<boolean>
   persist(albumCreation: AlbumCreation): Promise<string>
@@ -14,7 +19,7 @@ interface AlbumRepository {
   likeAlbum(userId: string, albumId: string) : Promise<void>
   unlikeAlbum(userId: string, albumId: string) : Promise<void>
   isAlbumLikedByUser(albumId: string, userId: string) : Promise<boolean>
-  getLikeCount(albumId: string): Promise<number>
+  getLikeCount(albumId: string): Promise<LikeCountSource>
 }
 
 export default AlbumRepository;

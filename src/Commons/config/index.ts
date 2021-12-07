@@ -32,6 +32,9 @@ const config = {
   s3: {
     bucketName: process.env.AWS_BUCKET_NAME,
   },
+  redis: {
+    server: process.env.REDIS_SERVER,
+  },
 };
 
 export default config;

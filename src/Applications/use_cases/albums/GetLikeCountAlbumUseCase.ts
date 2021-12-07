@@ -1,5 +1,7 @@
 import UseCaseDependencies from '../definitions/UseCaseDependencies';
-import AlbumRepository from '../../../Domains/albums/repository/AlbumRepository';
+import AlbumRepository, {
+  LikeCountSource,
+} from '../../../Domains/albums/repository/AlbumRepository';
 import InvariantError from '../../../Commons/exceptions/InvariantError';
 import NotFoundError from '../../../Commons/exceptions/NotFoundError';
 
@@ -10,7 +12,7 @@ class GetLikeCountAlbumUseCase {
     this.albumRepository = albumRepository;
   }
 
-  async execute(payload: any = {}): Promise<number> {
+  async execute(payload: any = {}): Promise<LikeCountSource> {
     const { albumId } = payload;
 
     if (!albumId) {

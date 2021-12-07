@@ -116,20 +116,22 @@ class AlbumsHandler {
     return response;
   }
 
-  async getAlbumLikesHandler(request: Request) {
+  async getAlbumLikesHandler(request: Request, h: ResponseToolkit) {
     const { albumId } = request.params;
 
     const useCase = this.container
       .getInstance(GetLikeCountAlbumUseCase.name) as GetLikeCountAlbumUseCase;
 
-    const likes = await useCase.execute({ albumId });
+    const { count, source } = await useCase.execute({ albumId });
 
-    return {
+    const response = h.response({
       status: 'success',
       data: {
-        likes,
+        likes: count,
       },
-    };
+    });
+    response.header('X-Data-Source', source);
+    return response;
   }
 }
 
