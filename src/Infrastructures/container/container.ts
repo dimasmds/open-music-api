@@ -45,6 +45,7 @@ import PlaylistExportServiceRMQ from '../services/PlaylistExportServiceRMQ';
 import ExportPlaylistUseCase from '../../Applications/use_cases/playlists/ExportPlaylistUseCase';
 import S3StorageService from '../storage/S3StorageService';
 import AddCoverAlbumUseCase from '../../Applications/use_cases/albums/AddCoverAlbumUseCase';
+import LikeAlbumUseCase from '../../Applications/use_cases/albums/LikeAlbumUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -278,6 +279,10 @@ container.register([
   },
   {
     Class: AddCoverAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: LikeAlbumUseCase,
     parameter: useCaseParameter,
   },
 ]);

@@ -81,6 +81,37 @@ class AlbumRepositoryPostgres implements AlbumRepository {
 
     await this.pool.query(query);
   }
+
+  async isAlbumLikedByUser(albumId: string, userId: string): Promise<boolean> {
+    const query = {
+      text: 'SELECT id FROM album_likes WHERE album_id = $1 AND user_id = $2',
+      values: [albumId, userId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return !!result.rowCount;
+  }
+
+  async likeAlbum(userId: string, albumId: string): Promise<void> {
+    const id = `albumLike-${this.idGenerator()}`;
+
+    const query = {
+      text: 'INSERT INTO album_likes VALUES ($1, $2, $3)',
+      values: [id, userId, albumId],
+    };
+
+    await this.pool.query(query);
+  }
+
+  async unlikeAlbum(userId: string, albumId: string): Promise<void> {
+    const query = {
+      text: 'DELETE FROM album_likes WHERE album_id = $1 AND user_id = $2',
+      values: [albumId, userId],
+    };
+
+    await this.pool.query(query);
+  }
 }
 
 export default AlbumRepositoryPostgres;

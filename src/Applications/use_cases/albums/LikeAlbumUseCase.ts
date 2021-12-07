@@ -20,11 +20,15 @@ class LikeAlbumUseCase {
       throw new NotFoundError('Album not found');
     }
 
-    const isUserLikedAlbum = await this.albumRepository.isAlbumLikedByUser(userId, albumId);
+    const isUserLikedAlbum = await this.albumRepository.isAlbumLikedByUser(albumId, userId);
 
-    return isUserLikedAlbum
-      ? this.albumRepository.unlikeAlbum(userId, albumId)
-      : this.albumRepository.likeAlbum(userId, albumId);
+    if (isUserLikedAlbum) {
+      await this.albumRepository.unlikeAlbum(userId, albumId);
+      return 'unliked';
+    }
+
+    await this.albumRepository.likeAlbum(userId, albumId);
+    return 'liked';
   }
 
   private static verifyPayload({ userId, albumId }: any) {

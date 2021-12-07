@@ -5,6 +5,7 @@ import GetAlbumDetailUseCase from '../../../../Applications/use_cases/albums/Get
 import UpdateAlbumUseCase from '../../../../Applications/use_cases/albums/UpdateAlbumUseCase';
 import DeleteAlbumUseCase from '../../../../Applications/use_cases/albums/DeleteAlbumUseCase';
 import AddCoverAlbumUseCase from '../../../../Applications/use_cases/albums/AddCoverAlbumUseCase';
+import LikeAlbumUseCase from '../../../../Applications/use_cases/albums/LikeAlbumUseCase';
 
 class AlbumsHandler {
   private container: Container;
@@ -17,6 +18,7 @@ class AlbumsHandler {
     this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
     this.postAlbumCoverHandler = this.postAlbumCoverHandler.bind(this);
+    this.postAlbumLikeHandler = this.postAlbumLikeHandler.bind(this);
   }
 
   async postAlbumHandler(request: Request, h: ResponseToolkit) {
@@ -90,6 +92,22 @@ class AlbumsHandler {
     const response = h.response({
       status: 'success',
       message: 'album cover upload success',
+    });
+    response.code(201);
+    return response;
+  }
+
+  async postAlbumLikeHandler(request: Request, h: ResponseToolkit) {
+    const { userId } = request.auth.credentials;
+    const { albumId } = request.params;
+
+    const useCase = this.container.getInstance(LikeAlbumUseCase.name) as LikeAlbumUseCase;
+
+    const message = await useCase.execute({ userId, albumId });
+
+    const response = h.response({
+      status: 'success',
+      message,
     });
     response.code(201);
     return response;
