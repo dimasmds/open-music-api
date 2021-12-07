@@ -1,9 +1,10 @@
 import { Pool } from 'pg';
-import AlbumRepository from '../../Domains/albums/repository/AlbumRepository';
+import AlbumRepository, { LikeCountSource } from '../../Domains/albums/repository/AlbumRepository';
 import RepositoryDependencies from './definitions/RepositoryDependencies';
 import AlbumDetail from '../../Domains/albums/entities/AlbumDetail';
 import AlbumCreation from '../../Domains/albums/entities/AlbumCreation';
 import AlbumUpdate from '../../Domains/albums/entities/AlbumUpdate';
+import createRedisClient from '../cache/redis/client';
 
 class AlbumRepositoryPostgres implements AlbumRepository {
   private pool: Pool;
@@ -80,6 +81,75 @@ class AlbumRepositoryPostgres implements AlbumRepository {
     };
 
     await this.pool.query(query);
+  }
+
+  async isAlbumLikedByUser(albumId: string, userId: string): Promise<boolean> {
+    const query = {
+      text: 'SELECT id FROM album_likes WHERE album_id = $1 AND user_id = $2',
+      values: [albumId, userId],
+    };
+
+    const result = await this.pool.query(query);
+
+    return !!result.rowCount;
+  }
+
+  async likeAlbum(userId: string, albumId: string): Promise<void> {
+    const redisClient = await createRedisClient();
+    await redisClient.connect();
+
+    const id = `albumLike-${this.idGenerator()}`;
+
+    const query = {
+      text: 'INSERT INTO album_likes VALUES ($1, $2, $3)',
+      values: [id, userId, albumId],
+    };
+
+    await this.pool.query(query);
+    await redisClient.del(`albumLikeCount-${albumId}`);
+  }
+
+  async unlikeAlbum(userId: string, albumId: string): Promise<void> {
+    const redisClient = await createRedisClient();
+    await redisClient.connect();
+
+    const query = {
+      text: 'DELETE FROM album_likes WHERE album_id = $1 AND user_id = $2',
+      values: [albumId, userId],
+    };
+
+    await this.pool.query(query);
+    await redisClient.del(`albumLikeCount-${albumId}`);
+  }
+
+  async getLikeCount(albumId: string): Promise<LikeCountSource> {
+    const redisClient = await createRedisClient();
+    await redisClient.connect();
+
+    const cachedLikeCount = await redisClient.get(`albumLikeCount-${albumId}`);
+
+    if (cachedLikeCount) {
+      await redisClient.disconnect();
+      return {
+        count: parseInt(cachedLikeCount, 10),
+        source: 'cache',
+      };
+    }
+
+    const query = {
+      text: 'SELECT COUNT(*) FROM album_likes WHERE album_id = $1',
+      values: [albumId],
+    };
+
+    const result = await this.pool.query(query);
+    const likeCount = Number(result.rows[0].count);
+    await redisClient.set(`albumLikeCount-${albumId}`, `${likeCount}`);
+
+    await redisClient.disconnect();
+    return {
+      count: likeCount,
+      source: 'database',
+    };
   }
 }
 

@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import UserRepositoryPostgres from '../repository/UserRepositoryPostgres';
 import pool from '../database/postgres/pool';
 import AuthenticationRepositoryPostgres from '../repository/AuthenticationRepositoryPostgres';
-import BcryptPasswordHash from '../security/BcryptPasswordHash';
 import JwtAuthTokenCreator from '../security/JwtAuthTokenCreator';
 import UserCreationUseCase from '../../Applications/use_cases/users/UserCreationUseCase';
 import LoginUseCase from '../../Applications/use_cases/authentications/LoginUseCase';
@@ -45,6 +44,8 @@ import PlaylistExportServiceRMQ from '../services/PlaylistExportServiceRMQ';
 import ExportPlaylistUseCase from '../../Applications/use_cases/playlists/ExportPlaylistUseCase';
 import S3StorageService from '../storage/S3StorageService';
 import AddCoverAlbumUseCase from '../../Applications/use_cases/albums/AddCoverAlbumUseCase';
+import LikeAlbumUseCase from '../../Applications/use_cases/albums/LikeAlbumUseCase';
+import GetLikeCountAlbumUseCase from '../../Applications/use_cases/albums/GetLikeCountAlbumUseCase';
 
 /** definitions  */
 const useCaseParameter: ParameterOption = {
@@ -156,7 +157,7 @@ container.register([
 container.register([
   {
     key: 'PasswordHash',
-    Class: process.env.NODE_ENV === 'test' ? Base64PasswordHash : BcryptPasswordHash,
+    Class: Base64PasswordHash,
   },
   {
     key: 'AuthTokenCreator',
@@ -278,6 +279,14 @@ container.register([
   },
   {
     Class: AddCoverAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: LikeAlbumUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    Class: GetLikeCountAlbumUseCase,
     parameter: useCaseParameter,
   },
 ]);

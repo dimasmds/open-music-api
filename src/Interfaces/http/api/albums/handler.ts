@@ -5,6 +5,9 @@ import GetAlbumDetailUseCase from '../../../../Applications/use_cases/albums/Get
 import UpdateAlbumUseCase from '../../../../Applications/use_cases/albums/UpdateAlbumUseCase';
 import DeleteAlbumUseCase from '../../../../Applications/use_cases/albums/DeleteAlbumUseCase';
 import AddCoverAlbumUseCase from '../../../../Applications/use_cases/albums/AddCoverAlbumUseCase';
+import LikeAlbumUseCase from '../../../../Applications/use_cases/albums/LikeAlbumUseCase';
+import GetLikeCountAlbumUseCase
+  from '../../../../Applications/use_cases/albums/GetLikeCountAlbumUseCase';
 
 class AlbumsHandler {
   private container: Container;
@@ -17,6 +20,8 @@ class AlbumsHandler {
     this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
     this.postAlbumCoverHandler = this.postAlbumCoverHandler.bind(this);
+    this.postAlbumLikeHandler = this.postAlbumLikeHandler.bind(this);
+    this.getAlbumLikesHandler = this.getAlbumLikesHandler.bind(this);
   }
 
   async postAlbumHandler(request: Request, h: ResponseToolkit) {
@@ -92,6 +97,40 @@ class AlbumsHandler {
       message: 'album cover upload success',
     });
     response.code(201);
+    return response;
+  }
+
+  async postAlbumLikeHandler(request: Request, h: ResponseToolkit) {
+    const { userId } = request.auth.credentials;
+    const { albumId } = request.params;
+
+    const useCase = this.container.getInstance(LikeAlbumUseCase.name) as LikeAlbumUseCase;
+
+    const message = await useCase.execute({ userId, albumId });
+
+    const response = h.response({
+      status: 'success',
+      message,
+    });
+    response.code(201);
+    return response;
+  }
+
+  async getAlbumLikesHandler(request: Request, h: ResponseToolkit) {
+    const { albumId } = request.params;
+
+    const useCase = this.container
+      .getInstance(GetLikeCountAlbumUseCase.name) as GetLikeCountAlbumUseCase;
+
+    const { count, source } = await useCase.execute({ albumId });
+
+    const response = h.response({
+      status: 'success',
+      data: {
+        likes: count,
+      },
+    });
+    response.header('X-Data-Source', source);
     return response;
   }
 }
