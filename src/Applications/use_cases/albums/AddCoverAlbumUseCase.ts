@@ -22,6 +22,8 @@ class AddCoverAlbumUseCase {
   }
 
   async execute(payload: any = {}) {
+    AddCoverAlbumUseCase.verifyPayload(payload);
+
     const { cover, albumId, contentType } = payload;
 
     const isAlbumIdValid = await this.albumRepository.isAlbumValid(albumId);
@@ -45,7 +47,7 @@ class AddCoverAlbumUseCase {
     return fileUrl;
   }
 
-  async verifyPayload({ cover, albumId, contentType }: any) {
+  private static verifyPayload({ cover, albumId, contentType }: any) {
     if (!cover) {
       throw new InvariantError('Cover is required');
     }
@@ -69,6 +71,8 @@ class AddCoverAlbumUseCase {
     if (typeof contentType !== 'string') {
       throw new InvariantError('Content type must be a string');
     }
+
+    console.log(contentType);
 
     if (!AddCoverAlbumUseCase.allowedMimeTypes.includes(contentType)) {
       throw new InvariantError('Content type is not allowed');
