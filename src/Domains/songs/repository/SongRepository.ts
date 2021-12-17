@@ -9,7 +9,7 @@ interface SongRepository {
   getSongById(id: string): Promise<SongDetail | null>
   getSongsInAlbum(albumId: string): Promise<Song[] | null>
   persist(songCreation: SongCreation): Promise<string>
-  getSongs(): Promise<Song[]>
+  getSongs(title?: string, performer?: string): Promise<Song[]>
   update(songUpdate: SongUpdate): Promise<void>
   deleteSongById(songId: string): Promise<void>
   getSongsInPlaylist(playlistId: string) : Promise<Song[]>
