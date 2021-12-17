@@ -36,10 +36,12 @@ class SongsHandler {
     return response;
   }
 
-  async getSongsHandler() {
+  async getSongsHandler(request: Request) {
     const getSongsUseCase = <GetSongsUseCase> this.container.getInstance(GetSongsUseCase.name);
 
-    const songs = await getSongsUseCase.execute();
+    const { title, performer } = request.query;
+
+    const songs = await getSongsUseCase.execute({ title, performer });
 
     return {
       status: 'success',

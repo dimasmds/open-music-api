@@ -45,10 +45,35 @@ class SongRepositoryPostgres implements SongRepository {
     });
   }
 
-  async getSongs(): Promise<Song[]> {
-    const query = {
-      text: 'SELECT id, title, performer FROM songs',
-    };
+  async getSongs(title?: string, performer?: string): Promise<Song[]> {
+    let query = null;
+
+    if (title && performer) {
+      query = {
+        text: 'SELECT * FROM songs WHERE UPPER(title) LIKE $1 AND UPPER(performer) LIKE $2',
+        values: [`%${title.toUpperCase()}%`, `%${performer.toUpperCase()}%`],
+      };
+    }
+
+    if (title && !performer) {
+      query = {
+        text: 'SELECT * FROM songs WHERE UPPER(title) LIKE $1',
+        values: [`%${title.toUpperCase()}%`],
+      };
+    }
+
+    if (!title && performer) {
+      query = {
+        text: 'SELECT * FROM songs WHERE UPPER(performer) LIKE $1',
+        values: [`%${performer.toUpperCase()}%`],
+      };
+    }
+
+    if (!title && !performer) {
+      query = {
+        text: 'SELECT id, title, performer FROM songs',
+      };
+    }
 
     const result = await this.pool.query(query);
 
